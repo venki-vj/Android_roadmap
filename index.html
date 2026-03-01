@@ -3,9 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Android Mastery | The Ultimate Developer Roadmap</title>
+    <title>Android Mastery | The Ultimate Developer Roadmap 2026</title>
+    <meta name="description" content="A complete, interactive roadmap for Android App Development and AOSP System Engineering. From Kotlin to Kernel drivers.">
+    <meta name="keywords" content="Android Roadmap, AOSP, Kotlin, Jetpack Compose, System Engineering, HAL, Binder IPC">
+    <meta name="author" content="Android Mastery">
+    
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://venki-vj.github.io/Android_roadmap/">
+    <meta property="og:title" content="Android Mastery Roadmap 2026">
+    <meta property="og:description" content="Master Android from App to Kernel. Interactive learning path.">
+    <meta property="og:image" content="assets/roadmap-preview.png">
+    
+    <!-- CSS & Fonts -->
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Structured Data (WebSite) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Android Mastery Roadmap",
+      "url": "https://venki-vj.github.io/Android_roadmap/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://venki-vj.github.io/Android_roadmap/roadmap.html?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
 </head>
 <body>
     <header class="navbar">
@@ -14,9 +41,16 @@
                 <span class="logo-icon">🚀</span>
                 Android Mastery
             </a>
+            
+            <!-- Mobile Toggle -->
+            <button class="mobile-menu-btn" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+
             <nav class="nav-links">
                 <a href="#features">Features</a>
                 <a href="#curriculum">Curriculum</a>
+                <button class="theme-btn" id="theme-toggle" aria-label="Toggle Dark Mode">🌙</button>
                 <a href="roadmap.html" class="btn btn-primary btn-sm">View Roadmap</a>
             </nav>
         </div>
@@ -32,6 +66,23 @@
                 <a href="#features" class="btn btn-secondary btn-lg">Explore Features</a>
             </div>
         </div>
+    </section>
+
+    <section class="roadmap-preview">
+        <h2>Roadmap Overview</h2>
+        <img src="assets/roadmap-preview.png" alt="Android Roadmap Structure" loading="lazy" onerror="this.style.display='none'">
+        <p>Structured in 5 progressive stages from Kotlin fundamentals to advanced architecture and publishing.</p>
+    </section>
+
+    <section class="timeline">
+      <div class="section-container">
+          <h2 style="margin-bottom: 2rem">Learning Phases</h2>
+          <div class="phase">Phase 1 – Kotlin Basics (2–3 weeks)</div>
+          <div class="phase">Phase 2 – Android Fundamentals (3–4 weeks)</div>
+          <div class="phase">Phase 3 – Architecture & MVVM</div>
+          <div class="phase">Phase 4 – Jetpack Compose</div>
+          <div class="phase">Phase 5 – Advanced & Publishing</div>
+      </div>
     </section>
 
     <section id="features" class="section bg-light">
@@ -60,7 +111,7 @@
         </div>
     </section>
 
-<section id="curriculum" class="section">
+    <section id="curriculum" class="section">
         <div class="section-container">
             <div class="section-header">
                 <h2>Everything You Need to Know</h2>
@@ -116,5 +167,8 @@
             </div>
         </div>
     </footer>
+
+    <!-- Script for Dark Mode & Mobile Menu -->
+    <script src="js/script.js"></script>
 </body>
 </html>

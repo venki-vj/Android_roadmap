@@ -3,112 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Android & AOSP Roadmap 2026 | Full Developer Guide</title>
+    <title>Android Roadmap 2026 | Developer Guide</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body class="roadmap-page">
 
-    <!-- ===== NAVBAR (matches index.html) ===== -->
     <header class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="logo">
-                <span class="logo-icon">🚀</span>
-                Android Mastery
-            </a>
+            <div class="nav-left">
+                <!-- Sidebar Toggle (Mobile Only) -->
+                <button id="sidebarToggle" class="sidebar-toggle-btn" aria-label="Toggle Topics">
+                    ☰ Topics
+                </button>
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">🚀</span>
+                    <span class="logo-text">Android Mastery</span>
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Toggle (Right) -->
+            <button class="mobile-menu-btn" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+
             <nav class="nav-links">
                 <a href="index.html#features">Features</a>
-                <a href="index.html#curriculum">Curriculum</a>
+                <button class="theme-btn" id="theme-toggle" aria-label="Toggle Dark Mode">🌙</button>
                 <a href="roadmap.html" class="btn btn-primary btn-sm">Roadmap</a>
             </nav>
         </div>
     </header>
 
-    <!-- ===== ROADMAP APP SHELL ===== -->
     <div class="app-container">
+        <!-- Overlay for mobile when sidebar is open -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-        <!-- LEFT SIDEBAR — Table of Contents -->
-        <aside class="sidebar">
+        <!-- LEFT SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <h2 class="sidebar-title">
-                    <span>🗺️</span> Android Roadmap
-                </h2>
-                <p class="sidebar-subtitle">App Dev · AOSP · System Engineering</p>
+                <div class="sidebar-top-row">
+                    <h2 class="sidebar-title"><span>🗺️</span> Roadmap</h2>
+                    <button id="sidebarClose" class="sidebar-close-btn">&times;</button>
+                </div>
                 <div class="search-wrapper">
                     <span class="search-icon">🔍</span>
                     <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off">
                 </div>
             </div>
 
-            <!-- TOC populated by script.js -->
-            <nav class="toc-container" id="tocContainer" aria-label="Roadmap navigation"></nav>
+            <nav class="toc-container" id="tocContainer"></nav>
 
             <div class="sidebar-footer">
-                <p>Version 5.0 · Updated Feb 2026</p>
-                <a href="https://developer.android.com" target="_blank" rel="noopener">
-                    developer.android.com ↗
-                </a>
-                <br>
-                <a href="https://source.android.com" target="_blank" rel="noopener">
-                    source.android.com ↗
-                </a>
+                <p>Updated Feb 2026</p>
+                <a href="https://developer.android.com" target="_blank">developer.android.com ↗</a>
             </div>
         </aside>
 
         <!-- MAIN CONTENT -->
         <main class="main-content" role="main">
-
             <header class="content-header">
-                <div class="breadcrumb" id="breadcrumb">
-                    <a href="roadmap.html">Roadmap</a> › Select a topic
+                <div class="header-left">
+                     <div class="breadcrumb" id="breadcrumb">Roadmap › Introduction</div>
+                </div>
+                <!-- NEW: Progress Controls -->
+                <div class="header-right">
+                     <div class="progress-wrapper">
+                         <input type="checkbox" id="markComplete" class="progress-checkbox">
+                         <label for="markComplete" class="progress-label">Mark as Read</label>
+                     </div>
                 </div>
             </header>
-
-            <!-- Topic content injected here by script.js -->
-            <article class="content-body" id="contentBody" aria-live="polite">
-                <!-- default welcome card -->
-                <div class="welcome-card">
-                    <div class="welcome-icon">🚀</div>
-                    <h1>Android & AOSP Roadmap 2026</h1>
-                    <p>A complete guide from <strong>app development</strong> to <strong>AOSP system engineering</strong>.</p>
-                    <p>Select any topic from the sidebar to begin. Topics are organized from beginner-friendly Kotlin basics
-                       all the way to advanced AOSP internals — boot sequence, custom kernel drivers, HAL, Binder IPC,
-                       system services, SELinux, and more.</p>
-                    <div class="welcome-topics">
-                        <span class="welcome-tag">🔤 Kotlin</span>
-                        <span class="welcome-tag">🎨 Compose</span>
-                        <span class="welcome-tag">🏛️ Architecture</span>
-                        <span class="welcome-tag">🔌 Boot Sequence</span>
-                        <span class="welcome-tag">⚙️ HAL</span>
-                        <span class="welcome-tag">🔗 Binder IPC</span>
-                        <span class="welcome-tag">🔧 System Services</span>
-                        <span class="welcome-tag">🖥️ Kernel Drivers</span>
-                        <span class="welcome-tag">🔒 SELinux</span>
-                        <span class="welcome-tag">🏗️ AOSP Build</span>
-                    </div>
-                </div>
+        
+            <article class="content-body" id="contentBody">
+                <!-- Content injected via JS -->
             </article>
-
-            <!-- Copy toast -->
-            <div class="toast-notification" id="copyToast" role="status" aria-live="polite">
-                ✨ Code copied!
-            </div>
+        
+            <div class="toast-notification" id="copyToast">✨ Code copied!</div>
         </main>
     </div>
 
-    <!-- ===== FOOTER (matches index.html) ===== -->
-    <footer class="footer roadmap-footer">
-        <div class="footer-container">
-            <p>&copy; 2026 Android Mastery Roadmap. Made with ❤️ for aspiring engineers.</p>
-            <div class="footer-links">
-                <a href="https://developer.android.com" target="_blank" rel="noopener">Android Docs</a>
-                <a href="https://source.android.com" target="_blank" rel="noopener">AOSP Docs</a>
-                <a href="https://kotlinlang.org" target="_blank" rel="noopener">Kotlin Docs</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Data first, then logic -->
     <script src="js/roadmap-data.js"></script>
     <script src="js/script.js"></script>
 </body>
