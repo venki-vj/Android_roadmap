@@ -1,250 +1,564 @@
+// REPLACE ALL CONTENT OF: js/script.js
+
 // ==========================================
-// ANDROID ROADMAP — SCRIPT (functionality only)
-// Content / data lives in: js/roadmap-data.js
+// ANDROID ROADMAP — ENGINE (SEO + LOGIC)
 // ==========================================
 
-// ─── State ───────────────────────────────
+// Global DOM Elements
+var tocContainer, contentBody, searchInput, copyToast, markCompleteCheckbox, breadcrumb;
 var activeTopicId = null;
+var currentDifficultyFilter = null;
 
-// ─── DOM refs (resolved in init) ─────────
-var tocContainer, contentBody, searchInput, copyToast;
+// LocalStorage Keys
+const STORAGE_KEY = 'android_roadmap_progress';
+const FILTER_KEY = 'android_roadmap_difficulty_filter';
 
-// =============================================
-// INIT — runs once the page is ready
-// =============================================
+document.addEventListener('DOMContentLoaded', () => {
+    init();
+    setupMobileMenu();
+    setupThemeToggle();
+    setupSidebarToggle();
+    setupDifficultyFilter();
+});
+
 function init() {
-  tocContainer = document.getElementById('tocContainer');
-  contentBody  = document.getElementById('contentBody');
-  searchInput  = document.getElementById('searchInput');
-  copyToast    = document.getElementById('copyToast');
+    tocContainer = document.getElementById('tocContainer');
+    contentBody  = document.getElementById('contentBody');
+    searchInput  = document.getElementById('searchInput');
+    copyToast    = document.getElementById('copyToast');
+    markCompleteCheckbox = document.getElementById('markComplete');
+    breadcrumb   = document.getElementById('breadcrumb');
 
-  if (!tocContainer || !contentBody) return;
+    if (tocContainer && contentBody && typeof roadmapData !== 'undefined') {
+        renderSidebar('');
+        setupSearch();
+        setupProgressTracker();
 
-  renderSidebar('');
-  setupSearch();
-
-  // Auto-load Introduction (first topic in the data)
-  var firstTopic = roadmapData && roadmapData[0] && roadmapData[0].topics && roadmapData[0].topics[0];
-  if (firstTopic) {
-    loadTopic(firstTopic.id);
-    markActive(firstTopic.id);   // highlight in sidebar
-    // Expand the first category so the active item is visible
-    var firstHeader = tocContainer.querySelector('.toc-category-header');
-    var firstList   = tocContainer.querySelector('.toc-topic-list');
-    if (firstHeader && firstList) {
-      firstHeader.classList.remove('collapsed');
-      firstList.classList.remove('collapsed');
+        // 1. Check URL Hash for deep linking (e.g. #kotlin-basics)
+        const hash = window.location.hash.substring(1); // remove #
+        if (hash) {
+            loadTopic(hash);
+        } else if (roadmapData.length > 0 && roadmapData[0].topics.length > 0) {
+            loadTopic(roadmapData[0].topics[0].id);
+        }
     }
-  }
 }
 
-// =============================================
-// RENDER SIDEBAR
-// Builds: category header + topic list
-// All categories start EXPANDED
-// =============================================
+// ==========================================
+// 1. Navigation & Content Loading
+// ==========================================
 function renderSidebar(filter) {
-  if (!tocContainer) return;
-  tocContainer.innerHTML = '';
-  var term = (filter || '').toLowerCase().trim();
+    if (!tocContainer) return;
+    tocContainer.innerHTML = '';
+    const term = (filter || '').toLowerCase().trim();
+    const progress = getProgress();
 
-  for (var s = 0; s < roadmapData.length; s++) {
-    var section = roadmapData[s];
+    roadmapData.forEach(section => {
+        let visibleTopics = section.topics.filter(t => 
+            !term || t.title.toLowerCase().includes(term)
+        );
+        
+        // Apply difficulty filter
+        if (currentDifficultyFilter) {
+            visibleTopics = visibleTopics.filter(t => t.difficulty === currentDifficultyFilter);
+        }
 
-    // Filter topics when searching
-    var topicsToShow = [];
-    for (var t = 0; t < section.topics.length; t++) {
-      if (!term || section.topics[t].title.toLowerCase().indexOf(term) !== -1) {
-        topicsToShow.push(section.topics[t]);
-      }
-    }
-    if (topicsToShow.length === 0) continue;
+        if (visibleTopics.length === 0) return;
 
-    // ── Category wrapper ──
-    let catEl = document.createElement('div');
-    catEl.className = 'toc-category';
+        // Category Header
+        const catDiv = document.createElement('div');
+        catDiv.className = 'toc-category';
+        
+        const header = document.createElement('div');
+        header.className = 'toc-category-header';
+        
+        // Use different property names if available
+        const categoryName = section.category || section.name || '';
+        const categoryIcon = section.icon || '';
+        
+        header.innerHTML = `
+            <span class="toc-cat-icon">${categoryIcon}</span>
+            <span class="toc-cat-title">${categoryName}</span>
+        `;
 
-    // ── Category header (click to toggle) — starts collapsed ──
-    let header = document.createElement('div');   // let = own binding per iteration
-    header.className = 'toc-category-header collapsed';
-    header.setAttribute('data-section', section.id || s);
-    header.innerHTML =
-      '<span class="toc-cat-icon">' + (section.icon || '') + '</span>' +
-      '<span class="toc-cat-title">' + section.category + '</span>' +
-      '<span class="toc-chevron">&#9662;</span>';
+        const ul = document.createElement('ul');
+        ul.className = 'toc-topic-list';
 
-    // ── Topic list (starts collapsed) ──
-    let topicList = document.createElement('ul'); // let = own binding per iteration
-    topicList.className = 'toc-topic-list collapsed';
+        visibleTopics.forEach(topic => {
+            const li = document.createElement('li');
+            li.className = 'toc-item';
+            if (progress.includes(topic.id)) li.classList.add('completed');
+            li.dataset.id = topic.id;
+            
+            // Add difficulty indicator if available
+            const diffClass = topic.difficulty ? ` diff-${topic.difficulty.toLowerCase().replace(/\s+/g, '-')}` : '';
+            li.className += diffClass;
+            
+            li.innerHTML = `<span>${topic.title}</span>`;
+            if (topic.difficulty) {
+                const badge = document.createElement('span');
+                badge.className = 'difficulty-mini-badge';
+                badge.textContent = topic.difficulty.substring(0, 1);
+                badge.title = topic.difficulty;
+                li.appendChild(badge);
+            }
+            
+            li.addEventListener('click', (e) => {
+                e.stopPropagation();
+                loadTopic(topic.id);
+                // Mobile UX: Close sidebar
+                if (window.innerWidth <= 900) closeMobileSidebar();
+            });
 
-    for (var i = 0; i < topicsToShow.length; i++) {
-      (function(topic) {
-        var li = document.createElement('li');
-        li.className = 'toc-item' + (topic.id === activeTopicId ? ' active' : '');
-        li.dataset.id = topic.id;
-        li.textContent = topic.title;
-
-        li.addEventListener('click', function(e) {
-          e.stopPropagation();           // don't bubble to category header
-          loadTopic(topic.id);
-          markActive(topic.id);
+            ul.appendChild(li);
         });
 
-        topicList.appendChild(li);
-      })(topicsToShow[i]);
-    }
-
-    // Toggle collapse on header click
-    header.addEventListener('click', function() {
-      var isCollapsed = topicList.classList.toggle('collapsed');
-      header.classList.toggle('collapsed', isCollapsed);
+        header.addEventListener('click', () => ul.classList.toggle('collapsed'));
+        
+        catDiv.appendChild(header);
+        catDiv.appendChild(ul);
+        tocContainer.appendChild(catDiv);
     });
-
-    catEl.appendChild(header);
-    catEl.appendChild(topicList);
-    tocContainer.appendChild(catEl);
-  }
 }
 
-// =============================================
-// MARK ACTIVE SIDEBAR ITEM
-// =============================================
-function markActive(topicId) {
-  activeTopicId = topicId;
-  var items = tocContainer.querySelectorAll('.toc-item');
-  for (var i = 0; i < items.length; i++) {
-    if (items[i].dataset.id === topicId) {
-      items[i].classList.add('active');
-      // Scroll into view so user can see it
-      items[i].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    } else {
-      items[i].classList.remove('active');
-    }
-  }
-}
-
-// =============================================
-// LOAD TOPIC → render in center content area
-// =============================================
 function loadTopic(topicId) {
-  // Find the topic
-  var found = null;
-  var sectionTitle = '';
-  for (var s = 0; s < roadmapData.length; s++) {
-    var section = roadmapData[s];
-    for (var t = 0; t < section.topics.length; t++) {
-      if (section.topics[t].id === topicId) {
-        found = section.topics[t];
-        sectionTitle = section.category;
-        break;
-      }
+    let found = null;
+    let sectionInfo = null;
+
+    // Search for topic
+    for (let s of roadmapData) {
+        const t = s.topics.find(x => x.id === topicId);
+        if (t) {
+            found = t;
+            sectionInfo = s;
+            break;
+        }
     }
-    if (found) break;
-  }
-  if (!found) return;
+    if (!found) return;
 
-  activeTopicId = topicId;
+    activeTopicId = topicId;
 
-  // Update breadcrumb
-  var bc = document.getElementById('breadcrumb');
-  if (bc) {
-    bc.innerHTML =
-      '<a href="roadmap.html">Roadmap</a> &rsaquo; ' +
-      '<span>' + sectionTitle + '</span> &rsaquo; ' +
-      '<strong>' + found.title + '</strong>';
-  }
+    // A. Update UI
+    highlightSidebar(topicId);
+    updateBreadcrumb(sectionInfo.category, found.title);
+    renderContent(found);
+    updateCheckboxState(topicId);
 
-  // Build & inject content into center panel
-  var officialLink = found.officialRef
-    ? '<div class="official-ref-footer">' +
-        '<a href="' + found.officialRef + '" target="_blank" rel="noopener">' +
-        '&#128218;&nbsp;View Official Documentation&nbsp;&#8599;</a>' +
-      '</div>'
-    : '';
+    // B. SEO & URL Updates
+    updatePageMetadata(found, sectionInfo);
+    window.location.hash = topicId; // Updates URL to .../roadmap.html#topic-id
 
-  contentBody.innerHTML =
-    '<div class="topic-detail fade-in">' +
-
-      '<div class="topic-hero-image">' +
-        '<img src="' + found.image + '"' +
-             ' alt="' + (found.imageAlt || found.title) + '"' +
-             ' onerror="this.onerror=null;this.src=\'https://developer.android.com/static/images/home/android-15-hero.webp\';">' +
-        '<p class="image-caption">' + (found.caption || '') + '</p>' +
-      '</div>' +
-
-      '<div class="topic-text-content">' +
-        found.content +
-      '</div>' +
-
-      officialLink +
-
-    '</div>';
-
-  // Attach copy buttons
-  attachCopyListeners();
-
-  // Scroll center panel to top
-  contentBody.scrollTop = 0;
-  var main = document.querySelector('.main-content');
-  if (main) main.scrollTop = 0;
+    // C. Scroll to top
+    contentBody.scrollTop = 0;
+    if(window.innerWidth <= 900) window.scrollTo(0,0);
 }
 
-// =============================================
-// CODE COPY BUTTONS
-// =============================================
-function attachCopyListeners() {
-  var buttons = contentBody.querySelectorAll('.copy-btn');
-  for (var i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener('click', function(e) {
-      var wrapper = e.target.closest('.code-wrapper');
-      if (!wrapper) return;
-      var pre = wrapper.querySelector('pre');
-      if (!pre) return;
-      var code = pre.textContent.trim();
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(code).then(showToast, function() {
-          fallbackCopy(code);
-        });
-      } else {
-        fallbackCopy(code);
-      }
+function renderContent(topic) {
+    // Build enhanced content with metadata and links
+    let metadata = '';
+    let keywordHtml = '';
+    let subtopicsHtml = '';
+    
+    // ========== METADATA WITH INLINE LINKS ==========
+    if (topic.difficulty) {
+        const diffClass = topic.difficulty.toLowerCase().replace(/\s+/g, '-');
+        metadata += `<span class="difficulty-badge difficulty-${diffClass}">${topic.difficulty}</span>`;
+    }
+    
+    if (topic.duration) {
+        metadata += `<span class="meta-item">⏱️ ${topic.duration}</span>`;
+    }
+    
+    // Add links inline with metadata
+    if (topic.videoTimestamp) {
+        metadata += `<a href="${topic.videoTimestamp}" target="_blank" class="inline-link" title="Watch Video Tutorial" rel="noopener noreferrer">▶️ Watch</a>`;
+    }
+    
+    if (topic.officialRef) {
+        metadata += `<a href="${topic.officialRef}" target="_blank" class="inline-link" title="Official Documentation" rel="noopener noreferrer">📖 Docs</a>`;
+    }
+    
+    // ========== KEYWORDS ==========
+    if (topic.keywords && Array.isArray(topic.keywords) && topic.keywords.length > 0) {
+        keywordHtml = `
+            <div class="keywords-section">
+                <strong>🏷️ Keywords:</strong>
+                <div class="keywords-list">${topic.keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}</div>
+            </div>
+        `;
+    }
+    
+    // ========== SUBTOPICS ==========
+    if (topic.subtopics && Array.isArray(topic.subtopics) && topic.subtopics.length > 0) {
+        subtopicsHtml = `
+            <div class="subtopics-section">
+                <h3>📚 Subtopics Covered</h3>
+                <ul class="subtopics-list">
+                    ${topic.subtopics.map(s => `<li>✓ ${s}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+    
+    // ========== MAIN CONTENT ==========
+    let contentHtml = `<div class="topic-detail fade-in">`;
+    
+    // Title
+    contentHtml += `<h1 class="topic-title">${topic.title}</h1>`;
+    
+    // Metadata (with inline links)
+    if (metadata) {
+        contentHtml += `<div class="topic-metadata">${metadata}</div>`;
+    }
+    
+    // Keywords and Subtopics
+    contentHtml += keywordHtml + subtopicsHtml;
+    
+    // ========== CONTENT SECTIONS HANDLER ==========
+    if (topic.contentSections && Array.isArray(topic.contentSections) && topic.contentSections.length > 0) {
+        contentHtml += renderContentSections(topic.contentSections, topic.id);
+    } else if (topic.content) {
+        // Fallback to old format
+        contentHtml += `<div class="topic-content">${topic.content}</div>`;
+    }
+    
+    contentHtml += `</div>`;
+    
+    contentBody.innerHTML = contentHtml;
+    attachCopyLogic();
+    attachSectionNavigation();
+}
+
+// ========== NEW: Render Content Sections (All Visible) ==========
+function renderContentSections(sections, topicId) {
+    if (!sections || sections.length === 0) return '';
+    
+    let html = `<div class="content-sections-container" data-topic="${topicId}">`;
+    
+    // Render each section - ALL VISIBLE AT ONCE (no pagination)
+    sections.forEach((section, idx) => {
+        html += `<div class="content-section" data-index="${idx}">
+            <h2 class="section-title">${section.title}</h2>
+            <p class="section-description">${section.description}</p>
+            <div class="section-details">${section.details}</div>
+            ${section.codeFlow ? `<div class="section-code-flow"><strong>Code Flow:</strong><pre>${section.codeFlow}</pre></div>` : ''}
+        </div>`;
     });
-  }
+    
+    html += `</div>`;
+    
+    return html;
 }
 
-function fallbackCopy(text) {
-  var ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.position = 'fixed';
-  ta.style.opacity = '0';
-  document.body.appendChild(ta);
-  ta.select();
-  try { document.execCommand('copy'); showToast(); } catch(e) {}
-  document.body.removeChild(ta);
+function attachSectionNavigation() {
+    // All sections are now visible at once - no navigation needed
+    // This function is kept for compatibility but does nothing
+    return;
 }
 
-function showToast() {
-  if (!copyToast) return;
-  copyToast.classList.add('show');
-  setTimeout(function() { copyToast.classList.remove('show'); }, 2000);
+function highlightSidebar(id) {
+    document.querySelectorAll('.toc-item').forEach(el => {
+        el.classList.toggle('active', el.dataset.id === id);
+    });
 }
 
-// =============================================
-// SEARCH — live filter sidebar topics
-// =============================================
+function updateBreadcrumb(category, title) {
+    if (breadcrumb) breadcrumb.innerHTML = `${category} › <strong>${title}</strong>`;
+}
+
+// ==========================================
+// 2. SEO ENGINE (Metadata + Schema)
+// ==========================================
+function updatePageMetadata(topic, section) {
+    // 1. Update Title
+    document.title = `${topic.title} | Android Roadmap`;
+
+    // 2. Update Description (Find existing or create new)
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.name = "description";
+        document.head.appendChild(metaDesc);
+    }
+    // Strip HTML from content snippet for description
+    const rawDesc = topic.content.replace(/<[^>]*>?/gm, '').substring(0, 160) + "...";
+    metaDesc.content = rawDesc;
+
+    // 3. Inject JSON-LD Schema (Article/TechArticle)
+    const schemaData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": topic.title,
+        "description": rawDesc,
+        "articleSection": section.category,
+        "author": {
+            "@type": "Organization",
+            "name": "Android Mastery"
+        }
+    };
+
+    let script = document.getElementById('dynamic-schema');
+    if (script) script.remove();
+    
+    script = document.createElement('script');
+    script.id = 'dynamic-schema';
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(schemaData);
+    document.head.appendChild(script);
+}
+
+// ==========================================
+// 3. Progress Tracker (LocalStorage)
+// ==========================================
+function getProgress() {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+}
+
+function setupProgressTracker() {
+    if(!markCompleteCheckbox) return;
+
+    markCompleteCheckbox.addEventListener('change', (e) => {
+        if(!activeTopicId) return;
+        
+        let progress = getProgress();
+        if (e.target.checked) {
+            if (!progress.includes(activeTopicId)) progress.push(activeTopicId);
+        } else {
+            progress = progress.filter(id => id !== activeTopicId);
+        }
+        
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+        
+        // Refresh sidebar to show checkmarks
+        const sidebarItem = document.querySelector(`.toc-item[data-id="${activeTopicId}"]`);
+        if(sidebarItem) {
+            if(e.target.checked) sidebarItem.classList.add('completed');
+            else sidebarItem.classList.remove('completed');
+        }
+    });
+}
+
+function updateCheckboxState(id) {
+    if(!markCompleteCheckbox) return;
+    const progress = getProgress();
+    markCompleteCheckbox.checked = progress.includes(id);
+}
+
+// ==========================================
+// 4. Utility / UI Logic
+// ==========================================
+function attachCopyLogic() {
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const wrapper = e.target.closest('.code-wrapper');
+            const code = wrapper.querySelector('pre').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                if(copyToast) {
+                    copyToast.classList.add('show');
+                    setTimeout(() => copyToast.classList.remove('show'), 2000);
+                }
+            });
+        });
+    });
+}
+
 function setupSearch() {
-  if (!searchInput) return;
-  searchInput.addEventListener('input', function() {
-    renderSidebar(searchInput.value);
-    if (activeTopicId) markActive(activeTopicId);
-  });
+    if(searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            renderSidebar(e.target.value);
+        });
+    }
 }
 
-// =============================================
-// BOOT — run immediately (scripts at <body> end)
-// =============================================
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
+function setupMobileMenu() {
+    const btn = document.querySelector('.mobile-menu-btn');
+    const nav = document.querySelector('.nav-links');
+    if(btn && nav) {
+        btn.addEventListener('click', () => nav.classList.toggle('active'));
+    }
+}
+
+function setupSidebarToggle() {
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const closeBtn = document.getElementById('sidebarClose');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    if (toggleBtn) toggleBtn.addEventListener('click', () => openMobileSidebar());
+    if (closeBtn) closeBtn.addEventListener('click', closeMobileSidebar);
+    if (overlay) overlay.addEventListener('click', closeMobileSidebar);
+}
+
+function openMobileSidebar() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('active');
+}
+
+function closeMobileSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('active');
+}
+
+function setupThemeToggle() {
+    console.log('%c[THEME] Starting setupThemeToggle', 'color: #3ddc84; font-weight: bold;');
+    
+    // Find all theme buttons
+    const themeBtns = document.querySelectorAll('#theme-toggle, .theme-btn');
+    console.log('[THEME] Buttons found:', themeBtns.length);
+    
+    if (themeBtns.length === 0) {
+        console.warn('[THEME] WARNING: No theme toggle buttons found!');
+        return;
+    }
+
+    // Get stored theme or use system preference
+    const stored = localStorage.getItem('theme') || 
+                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    
+    console.log('[THEME] Stored/Detected theme:', stored);
+    
+    // Apply initial theme
+    setTheme(stored);
+
+    // Attach click listeners to all theme toggle buttons
+    themeBtns.forEach((btn, idx) => {
+        if (!btn) {
+            console.warn(`[THEME] Button at index ${idx} is null`);
+            return;
+        }
+        
+        console.log(`[THEME] Attaching handler to button ${idx}`);
+        
+        const clickHandler = function(e) {
+            console.log('%c[THEME] Button clicked!', 'color: #3ddc84; font-weight: bold;');
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            console.log('[THEME] Current theme:', current);
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            console.log('[THEME] New theme:', newTheme);
+            setTheme(newTheme);
+        };
+        
+        btn.addEventListener('click', clickHandler);
+    });
+    
+    console.log('[THEME] setupThemeToggle complete');
+    
+    // System theme preference listener (optional)
+    try {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            const systemTheme = e.matches ? 'dark' : 'light';
+            const storedTheme = localStorage.getItem('theme');
+            if (!storedTheme) {
+                console.log('[THEME] System theme changed to:', systemTheme);
+                setTheme(systemTheme);
+            }
+        });
+    } catch (err) {
+        console.warn('[THEME] matchMedia listener error:', err);
+    }
+}
+
+function setTheme(theme) {
+    console.log('%c[THEME] setTheme() called with:', `color: #3ddc84; font-weight: bold;`, theme);
+    
+    // Validate theme value
+    if (theme !== 'dark' && theme !== 'light') {
+        console.warn('[THEME] Invalid theme value, defaulting to light');
+        theme = 'light';
+    }
+    
+    try {
+        // Set data attribute on html element
+        document.documentElement.setAttribute('data-theme', theme);
+        console.log('[THEME] Set data-theme to:', document.documentElement.getAttribute('data-theme'));
+        
+        // Save to localStorage
+        localStorage.setItem('theme', theme);
+        console.log('[THEME] Saved theme to localStorage');
+        
+        // Update button icons/text for all theme toggle buttons
+        const icon = theme === 'dark' ? '☀️' : '🌙';
+        const themeBtns = document.querySelectorAll('#theme-toggle, .theme-btn');
+        console.log('[THEME] Updating', themeBtns.length, 'buttons');
+        
+        themeBtns.forEach((btn, idx) => {
+            if (btn) {
+                btn.textContent = icon;
+                btn.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`);
+                console.log(`[THEME] Updated button ${idx}: ${btn.textContent}`);
+            }
+        });
+        
+        console.log('%c[THEME] ✓ Theme successfully changed to:', `color: #35c475; font-weight: bold;`, theme);
+    } catch (error) {
+        console.error('[THEME] Error in setTheme():', error);
+    }
+}
+
+// ==========================================
+// 5. Difficulty Filtering
+// ==========================================
+function setupDifficultyFilter() {
+    // Collect all unique difficulty levels from topics
+    const difficulties = new Set();
+    if (typeof roadmapData !== 'undefined' && Array.isArray(roadmapData)) {
+        roadmapData.forEach(section => {
+            if (section.topics) {
+                section.topics.forEach(topic => {
+                    if (topic.difficulty) difficulties.add(topic.difficulty);
+                });
+            }
+        });
+    }
+    
+    // Only show filter if we have difficulty data
+    if (difficulties.size === 0) {
+        console.log('No difficulty levels found in roadmap data');
+        return;
+    }
+    
+    // Build filter UI
+    const filterHtml = `
+        <div class="difficulty-filter">
+            <button class="filter-btn filter-all" data-filter="">All Levels</button>
+            ${Array.from(difficulties).sort().map(diff => 
+                `<button class="filter-btn filter-${diff.toLowerCase()}" data-filter="${diff}">${diff}</button>`
+            ).join('')}
+        </div>
+    `;
+    
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+    
+    // Insert after search (before toc-container)
+    const searchWrapper = sidebar.querySelector('.search-wrapper');
+    const tocContainer = sidebar.querySelector('.toc-container');
+    
+    if (searchWrapper && tocContainer) {
+        const filterDiv = document.createElement('div');
+        filterDiv.innerHTML = filterHtml;
+        searchWrapper.parentNode.insertBefore(filterDiv, tocContainer);
+        
+        // Attach event listeners
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentDifficultyFilter = e.target.dataset.filter;
+                localStorage.setItem(FILTER_KEY, currentDifficultyFilter);
+                renderSidebar(searchInput?.value || '');
+            });
+        });
+        
+        // Restore saved filter
+        const savedFilter = localStorage.getItem(FILTER_KEY);
+        if (savedFilter !== null) {
+            currentDifficultyFilter = savedFilter;
+            const btn = document.querySelector(`.filter-btn[data-filter="${savedFilter}"]`);
+            if (btn) btn.classList.add('active');
+            else document.querySelector('.filter-all')?.classList.add('active');
+        } else {
+            document.querySelector('.filter-all')?.classList.add('active');
+        }
+    }
 }
