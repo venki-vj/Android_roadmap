@@ -2768,6 +2768,1447 @@ adb shell ss -tupan</code></pre>`
         ]
       }
     ]
+  },
+
+  // ========== CATEGORY 15 ==========
+  {
+    id: "kotlin-programming",
+    category: "15. Kotlin Programming Language",
+    icon: "🎯",
+    difficulty: "Beginner",
+    description: "Master Kotlin: the modern language for Android development",
+    topics: [
+      {
+        id: "kotlin-fundamentals",
+        title: "Kotlin Fundamentals - Basics & Setup",
+        difficulty: "Beginner",
+        duration: "3 hours",
+        keywords: ["kotlin", "language", "setup", "basics"],
+        videoTimestamp: "https://www.youtube.com/watch?v=F9UC0DQvzV0",
+        officialRef: "https://kotlinlang.org/docs/getting-started.html",
+        subtopics: ["Variables & Types", "Functions", "String Templates", "Null Safety"],
+        contentSections: [
+          {
+            title: "What is Kotlin?",
+            description: "Kotlin is a modern, concise, and safer language for Android",
+            details: `<h3>Why Kotlin?</h3><ul><li>Concise syntax (40% less code)</li><li>Null safety (NullPointerException prevention)</li><li>Extension functions</li><li>Official Android language</li><li>100% Java interoperable</li></ul><h3>Installation</h3><pre><code class="language-bash"># Using IntelliJ IDEA - Kotlin is built-in
+
+# Or install standalone
+# Download from https://kotlinlang.org/</code></pre>`
+          },
+          {
+            title: "Variables, Types & Null Safety",
+            description: "Kotlin's type system and how it prevents common errors",
+            details: `<h3>Variable Declaration</h3><pre><code class="language-kotlin">// Immutable variable (preferred)
+val name = "Android"  // Type inferred as String
+
+// Mutable variable
+var count = 0
+count = 5  // OK
+
+// Explicit type
+val age: Int = 25
+
+// Constants
+const val API_KEY = "abc123"</code></pre><h3>Null Safety</h3><pre><code class="language-kotlin">// Nullable type
+val nullableName: String? = null
+
+// Non-nullable type
+val name: String = "Android"
+// name = null  // Compile error!
+
+// Safe call operator
+val length = nullableName?.length ?: 0
+
+// Elvis operator
+val userName = possibleName ?: "Guest"
+
+// Not-null assertion (use carefully!)
+val forceValue = nullableName!!</code></pre><h3>Smart Casts</h3><pre><code class="language-kotlin">val obj: Any = "Hello"
+
+if (obj is String) {
+    // obj is automatically cast to String
+    println(obj.length)  // Works!
+}</code></pre>`
+          },
+          {
+            title: "Functions & Lambda Expressions",
+            description: "Defining and using functions in Kotlin",
+            details: `<h3>Function Syntax</h3><pre><code class="language-kotlin">// Simple function with return
+fun add(a: Int, b: Int): Int {
+    return a + b
+}
+
+// Single expression function
+fun multiply(a: Int, b: Int) = a * b
+
+// Function with default parameters
+fun greet(name: String = "Android") {
+    println("Hello,  $name!")
+}
+
+// Function with varargs
+fun printNumbers(vararg numbers: Int) {
+    for (num in numbers) println(num)
+}
+
+// Extension function
+fun String.addExclamation() = "$this!"
+val result = "Hello".addExclamation()  // "Hello!"</code></pre><h3>Lambda Expressions</h3><pre><code class="language-kotlin">// Lambda with explicit parameters
+val add = { a: Int, b: Int -> a + b }
+val result = add(3, 5)  // 8
+
+// Lambda with receiver (trailing lambda)
+val greetings = "Android".apply { 
+    println("Hello from $this")
+}.also { 
+    println("Value is $it")
+}
+
+// Lambdas in collections
+val numbers = listOf(1, 2, 3, 4, 5)
+val doubled = numbers.map { it * 2 }  // [2, 4, 6, 8, 10]
+val evens = numbers.filter { it % 2 == 0 }  // [2, 4]</code></pre>`
+          }
+        ]
+      },
+      {
+        id: "kotlin-oop",
+        title: "Object-Oriented Programming in Kotlin",
+        difficulty: "Intermediate",
+        duration: "4 hours",
+        keywords: ["oop", "class", "inheritance", "interface"],
+        videoTimestamp: "https://www.youtube.com/watch?v=0xKg9lFehYE",
+        officialRef: "https://kotlinlang.org/docs/object-oriented-programming.html",
+        subtopics: ["Classes & Objects", "Inheritance", "Interfaces & Sealed", "Data Classes"],
+        contentSections: [
+          {
+            title: "Classes & Constructors",
+            description: "Defining and instantiating classes in Kotlin",
+            details: `<h3>Class Definition</h3><pre><code class="language-kotlin">// Simple class
+class Person {
+    var name: String = ""
+    var age: Int = 0
+}
+
+// Primary constructor
+class Person(val name: String, var age: Int) {
+    fun introduce() = "Hi, I'm $name and $age years old"
+}
+
+// Init block
+class Person(val name: String) {
+    init {
+        println("Created person: $name")
+    }
+}
+
+// Secondary constructor
+class Person(val name: String) {
+    var age: Int = 0
+    
+    constructor(name: String, age: Int): this(name) {
+        this.age = age
+    }
+}</code></pre><h3>Data Classes</h3><pre><code class="language-kotlin">// Data class automatically generates:
+// equals(), hashCode(), toString(), copy()
+data class User(
+    val id: Int,
+    val name: String,
+    val email: String
+)
+
+val user1 = User(1, "John", "john@email.com")
+val user2 = user1.copy(name = "Jane")  // Copy with some changes
+println(user1 == user2)  // Checks equality by value</code></pre>`
+          },
+          {
+            title: "Inheritance & Polymorphism",
+            description: "Creating class hierarchies and using polymorphism",
+            details: `<h3>Inheritance</h3><pre><code class="language-kotlin">// Custom Exception inherits from Exception
+class CustomException(message: String): Exception(message)
+
+// Open classes for inheritance
+open class Animal(val name: String) {
+    open fun sound() = "Some sound"
+}
+
+// Inherit from Animal
+class Dog(name: String): Animal(name) {
+    override fun sound() = "Woof!"
+}
+
+// Usage
+val animal: Animal = Dog("Buddy")
+println(animal.sound())  // Output: Woof!</code></pre><h3>Interfaces</h3><pre><code class="language-kotlin">interface Drawable {
+    fun draw()
+    fun getArea() = 0.0  // Default implementation
+}
+
+class Circle(val radius: Double): Drawable {
+    override fun draw() {
+        println("Drawing circle")
+    }
+    
+    override fun getArea() = Math.PI * radius * radius
+}
+
+// Multiple interfaces
+class Rectangle: Drawable, Comparable<Rectangle> {
+    override fun draw() { /* ... */ }
+    override fun compareTo(other: Rectangle) = 0
+}</code></pre>`
+          }
+        ]
+      },
+      {
+        id: "kotlin-collections",
+        title: "Collections & Sequences",
+        difficulty: "Intermediate",
+        duration: "3 hours",
+        keywords: ["collections", "list", "map", "set", "sequence"],
+        videoTimestamp: "https://www.youtube.com/watch?v=XeNvWcJ5Oo0",
+        officialRef: "https://kotlinlang.org/docs/collections-overview.html",
+        subtopics: ["Lists & Arrays", "Maps & Sets", "Functional Operations"],
+        contentSections: [
+          {
+            title: "Working with Collections",
+            description: "Lists, Maps, and Sets in Kotlin",
+            details: `<h3>Lists</h3><pre><code class="language-kotlin">// Immutable list
+val fruits = listOf("apple", "banana", "orange")
+println(fruits[0])  // apple
+
+// Mutable list
+val numbers = mutableListOf(1, 2, 3)
+numbers.add(4)
+numbers.remove(1)
+
+// List operations
+val doubled = numbers.map { it * 2 }
+val filtered = numbers.filter { it > 2 }
+val sum = numbers.fold(0) { acc, value -> acc + value }</code></pre><h3>Maps</h3><pre><code class="language-kotlin">// Immutable map
+val settings = mapOf("theme" to "dark", "language" to "en")
+
+// Mutable map
+val cache = mutableMapOf<String, Any>()
+cache["user"] = User(1, "John")
+cache["count"] = 5
+
+// Map iteration
+for ((key, value) in cache) {
+    println("$key -> $value")
+}
+
+// Map operations
+val keys = settings.keys
+val values = settings.values
+val hasTheme = settings.containsKey("theme")</code></pre><h3>Sequences</h3><pre><code class="language-kotlin">// Sequences are lazy (evaluated on-demand)
+val numbers = (1..1000).asSequence()
+    .filter { it % 2 == 0 }
+    .map { it * 2 }
+    .take(5)
+    .toList()  // [4, 8, 12, 16, 20]
+
+// More efficient than chaining on lists!</code></pre>`
+          }
+        ]
+      }
+    ]
+  },
+
+  // ========== CATEGORY 16 ==========
+  {
+    id: "android-ui-fundamentals",
+    category: "16. Android UI Development",
+    icon: "🎨",
+    difficulty: "Beginner",
+    description: "Master Android layouts, components, and UI design patterns",
+    topics: [
+      {
+        id: "activity-fragment-basics",
+        title: "Activities & Fragments - App Navigation",
+        difficulty: "Beginner",
+        duration: "5 hours",
+        keywords: ["activity", "fragment", "lifecycle", "navigation"],
+        videoTimestamp: "https://www.youtube.com/watch?v=p9VY9H5vcb8",
+        officialRef: "https://developer.android.com/guide/components/activities",
+        subtopics: ["Activity Lifecycle", "Fragment Lifecycle", "Navigation"],
+        contentSections: [
+          {
+            title: "Activity Lifecycle & State Management",
+            description: "Understanding Activity lifecycle and handling configuration changes",
+            details: `<h3>Activity Lifecycle States</h3><pre><code>onCreate() → onStart() → onResume() → (Running)
+                                    ↓
+                              onPause() → onStop() → onDestroy()
+                             (partially visible)   (not visible)
+</code></pre><h3>Lifecycle Implementation</h3><pre><code class="language-kotlin">class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        // Initialize UI and data
+        Log.d("MainActivity", "onCreate called")
+    }
+    
+    override fun onStart() {
+        super.onStart()
+        // App becomes visible
+        Log.d("MainActivity", "onStart called")
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        // App gets user focus
+        Log.d("MainActivity", "onResume called")
+        startUpdatingUI()
+    }
+    
+    override fun onPause() {
+        super.onPause()
+        // App losing focus (another app coming)
+        Log.d("MainActivity", "onPause called")
+        stopUpdatingUI()
+    }
+    
+    override fun onStop() {
+        super.onStop()
+        // App no longer visible
+        Log.d("MainActivity", "onStop called")
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        // Activity being destroyed
+        Log.d("MainActivity", "onDestroy called")
+        cleanup()
+    }
+}</code></pre><h3>Saving State</h3><pre><code class="language-kotlin">// Save state when activity might be destroyed
+override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putString("user_name", "John")
+    outState.putInt("counter", 42)
+}
+
+// Restore state
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    if (savedInstanceState != null) {
+        val userName = savedInstanceState.getString("user_name")
+        val counter = savedInstanceState.getInt("counter")
+    }
+}</code></pre>`
+          },
+          {
+            title: "Fragments - Reusable UI Components",
+            description: "Creating flexible, reusable UI with Fragments",
+            details: `<h3>Fragment Creation</h3><pre><code class="language-kotlin">class HomeFragment : Fragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_home, container, false)
+    }
+    
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // Initialize views here
+        val button = view.findViewById<Button>(R.id.btn_action)
+        button.setOnClickListener {
+            // Handle click
+        }
+    }
+}
+
+// Add fragment to Activity
+val fragment = HomeFragment()
+supportFragmentManager.beginTransaction()
+    .add(R.id.fragment_container, fragment)
+    .commit()</code></pre><h3>Fragment Communication</h3><pre><code class="language-kotlin">// Using shared ViewModel
+class SharedViewModel : ViewModel() {
+    val selectedItem = MutableLiveData<String>()
+}
+
+// In Fragment A
+val viewModel: SharedViewModel = ViewModelProvider(requireActivity())
+    .get(SharedViewModel::class.java)
+viewModel.selectedItem.value = "Item 1"
+
+// In Fragment B (listening)
+viewModel.selectedItem.observe(viewLifecycleOwner) { item ->
+    println("Selected: $item")
+}</code></pre>`
+          }
+        ]
+      },
+      {
+        id: "recyclerview-lists",
+        title: "RecyclerView - Displaying Lists",
+        difficulty: "Intermediate",
+        duration: "4 hours",
+        keywords: ["recyclerview", "adapter", "list", "performance"],
+        videoTimestamp: "https://www.youtube.com/watch?v=8rtIK2hR0FM",
+        officialRef: "https://developer.android.com/develop/ui/views/recyclerview",
+        subtopics: ["RecyclerView Adapter", "ViewHolder Pattern", "Performance"],
+        contentSections: [
+          {
+            title: "Building RecyclerView Adapters",
+            description: "Creating efficient list adapters with RecyclerView",
+            details: `<h3>Simple RecyclerView Adapter</h3><pre><code class="language-kotlin">// Data class for items
+data class User(val id: Int, val name: String, val email: String)
+
+// ViewHolder - holds views for one item
+class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val nameView: TextView = itemView.findViewById(R.id.text_name)
+    private val emailView: TextView = itemView.findViewById(R.id.text_email)
+    
+    fun bind(user: User) {
+        nameView.text = user.name
+        emailView.text = user.email
+    }
+}
+
+// Adapter - manages list of items
+class UserAdapter(private val users: List<User>) : 
+    RecyclerView.Adapter<UserViewHolder>() {
+    
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_user, parent, false)
+        return UserViewHolder(view)
+    }
+    
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+        holder.bind(users[position])
+    }
+    
+    override fun getItemCount() = users.size
+}</code></pre><h3>Setup RecyclerView in Activity</h3><pre><code class="language-kotlin">class UserListActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_user_list)
+        
+        val recyclerView = findViewById<RecyclerView>(R.id.recycler_users)
+        val users = listOf(
+            User(1, "John", "john@email.com"),
+            User(2, "Jane", "jane@email.com"),
+            User(3, "Bob", "bob@email.com")
+        )
+        
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@UserListActivity)
+            adapter = UserAdapter(users)
+        }
+    }
+}</code></pre><h3>ListAdapter - Automatic Diff Updates</h3><pre><code class="language-kotlin">// Automatically detects item changes
+class UserListAdapter : ListAdapter<User, UserViewHolder>(UserDiffCallback()) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_user, parent, false)
+        return UserViewHolder(view)
+    }
+    
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
+}
+
+class UserDiffCallback : DiffUtil.ItemCallback<User>() {
+    override fun areItemsTheSame(old: User, new: User) = old.id == new.id
+    override fun areContentsTheSame(old: User, new: User) = old == new
+}</code></pre>`
+          }
+        ]
+      },
+      {
+        id: "shared-preferences",
+        title: "SharedPreferences - Storing Data",
+        difficulty: "Beginner",
+        duration: "2 hours",
+        keywords: ["sharedpreferences", "storage", "preferences", "data"],
+        videoTimestamp: "https://www.youtube.com/watch?v=CcV-VS4E9bo",
+        officialRef: "https://developer.android.com/training/data-storage/shared-preferences",
+        subtopics: ["Reading/Writing", "Data Types", "Best Practices"],
+        contentSections: [
+          {
+            title: "Working with SharedPreferences",
+            description: "Simple key-value storage for app preferences",
+            details: `<h3>Reading & Writing Data</h3><pre><code class="language-kotlin">// Get SharedPreferences instance
+val sharedPref = context.getSharedPreferences(
+    "app_preferences", 
+    Context.MODE_PRIVATE
+)
+
+// Write data
+sharedPref.edit().apply {
+    putString("username", "John")
+    putInt("user_id", 123)
+    putBoolean("is_logged_in", true)
+    apply()  // Async commit
+}
+
+// Read data
+val username = sharedPref.getString("username", "Guest")
+val userId = sharedPref.getInt("user_id", -1)
+val isLoggedIn = sharedPref.getBoolean("is_logged_in", false)</code></pre><h3>Using DefaultSharedPreferences</h3><pre><code class="language-kotlin">// System-wide preferences
+val settings = PreferenceManager.getDefaultSharedPreferences(context)
+
+settings.edit().apply {
+    putString("theme", "dark")
+    commit()  // Sync commit (wait for completion)
+}
+
+val theme = settings.getString("theme", "light")</code></pre><h3>Helper Extension</h3><pre><code class="language-kotlin">// Extension function for cleaner API
+fun SharedPreferences.setUser(user: User) {
+    edit().apply {
+        putString("user_name", user.name)
+        putInt("user_id", user.id)
+        apply()
+    }
+}
+
+fun SharedPreferences.getUser(): User? {
+    val name = getString("user_name", null)
+    val id = getInt("user_id", -1)
+    return if (name != null && id != -1) User(id, name) else null
+}</code></pre>`
+          }
+        ]
+      }
+    ]
+  },
+
+  // ========== CATEGORY 17 ==========
+  {
+    id: "mvvm-architecture",
+    category: "17. MVVM & Modern Architecture Patterns",
+    icon: "🏗️",
+    difficulty: "Intermediate",
+    description: "Build scalable, testable Android apps with MVVM and Jetpack",
+    topics: [
+      {
+        id: "mvvm-pattern",
+        title: "MVVM Architecture Pattern",
+        difficulty: "Intermediate",
+        duration: "5 hours",
+        keywords: ["mvvm", "viewmodel", "livedata", "architecture"],
+        videoTimestamp: "https://www.youtube.com/watch?v=5rHuHkH5NQY",
+        officialRef: "https://developer.android.com/jetpack/guide",
+        subtopics: ["ViewModel", "LiveData", "Data Binding"],
+        contentSections: [
+          {
+            title: "MVVM Components - Model, View, ViewModel",
+            description: "Understanding the MVVM architecture pattern",
+            details: `<h3>MVVM Architecture Layers</h3><pre><code>┌─────────────────────────────────────────┐
+│           VIEW (UI)                     │  Activity/Fragment
+│      (Display + User Input)             │  └─ Observes ViewModel
+├─────────────────────────────────────────┤
+│         VIEWMODEL                       │  ViewModel
+│    (UI Logic + State Management)        │  └─ Holds UI state
+├─────────────────────────────────────────┤
+│           MODEL                         │  Repository
+│   (Business Logic + Data Access)        │  └─ Manages data
+└─────────────────────────────────────────┘
+</code></pre><h3>Creating a ViewModel</h3><pre><code class="language-kotlin">class UserViewModel : ViewModel() {
+    // UI state exposed via LiveData
+    private val _userName = MutableLiveData<String>()
+    val userName: LiveData<String> = _userName
+    
+    private val _isLoading = MutableLiveData<Boolean>(false)
+    val isLoading: LiveData<Boolean> = _isLoading
+    
+    // Business logic/use cases
+    private val userRepository = UserRepository()
+    
+    fun loadUser(userId: Int) {
+        _isLoading.value = true
+        
+        // Fetch from repository
+        userRepository.getUser(userId) { user ->
+            _userName.value = user.name
+            _isLoading.value = false
+        }
+    }
+    
+    // ViewModel survives configuration changes!
+    override fun onCleared() {
+        super.onCleared()
+        // Cleanup resources
+        userRepository.cancel()
+    }
+}</code></pre><h3>Observing from Activity/Fragment</h3><pre><code class="language-kotlin">class UserActivity : AppCompatActivity() {
+    private val viewModel: UserViewModel by viewModels()
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_user)
+        
+        val nameView: TextView = findViewById(R.id.text_name)
+        val loadingView: ProgressBar = findViewById(R.id.loading)
+        
+        // Observe ViewModel changes
+        viewModel.userName.observe(this) { name ->
+            nameView.text = name
+        }
+        
+        viewModel.isLoading.observe(this) { loading ->
+            loadingView.visibility = if (loading) View.VISIBLE else View.GONE
+        }
+        
+        // Trigger data loading
+        viewModel.loadUser(userId = 1)
+    }
+}</code></pre>`
+          }
+        ]
+      },
+      {
+        id: "jetpack-compose",
+        title: "Jetpack Compose - Modern UI Toolkit",
+        difficulty: "Intermediate",
+        duration: "6 hours",
+        keywords: ["jetpack", "compose", "declarative", "ui"],
+        videoTimestamp: "https://www.youtube.com/watch?v=ssEYhvzjKYs",
+        officialRef: "https://developer.android.com/jetpack/compose",
+        subtopics: ["Composables", "State", "Layouts", "Themes"],
+        contentSections: [
+          {
+            title: "Introduction to Jetpack Compose",
+            description: "Declarative UI toolkit for Android",
+            details: `<h3>Hello World in Compose</h3><pre><code class="language-kotlin">@Composable
+fun HelloScreen() {
+    Text(text = "Hello, Compose!")
+}
+
+// In Activity
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            HelloScreen()
+        }
+    }
+}</code></pre><h3>Composable Functions</h3><pre><code class="language-kotlin">@Composable
+fun GreetingCard(name: String) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "Hello, $name!",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Welcome to Compose",
+                fontSize = 14.sp,
+                color = Color.Gray
+            )
+        }
+    }
+}
+
+// Preview in Android Studio
+@Preview
+@Composable
+fun GreetingCardPreview() {
+    GreetingCard(name = "Android")
+}</code></pre><h3>State Management in Compose</h3><pre><code class="language-kotlin">@Composable
+fun CounterApp() {
+    var count by remember { mutableStateOf(0) }
+    
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Text(text = "Count: $count", fontSize = 32.sp)
+        
+        Button(onClick = { count++ }) {
+            Text("Increment")
+        }
+    }
+}
+
+// Connected to ViewModel
+@Composable
+fun UserScreen(viewModel: UserViewModel = viewModel()) {
+    val userName by viewModel.userName.observeAsState("")
+    
+    Column {
+        Text(userName)
+        Button(onClick = { viewModel.loadUser(1) }) {
+            Text("Load User")
+        }
+    }
+}</code></pre>`
+          }
+        ]
+      },
+      {
+        id: "hilt-dependency-injection",
+        title: "Hilt - Dependency Injection Framework",
+        difficulty: "Intermediate",
+        duration: "3 hours",
+        keywords: ["hilt", "di", "injection", "dependencies"],
+        videoTimestamp: "https://www.youtube.com/watch?v=sgH8xfk_p_U",
+        officialRef: "https://developer.android.com/training/dependency-injection/hilt-android",
+        subtopics: ["Setup", "Modules", "Injection Points"],
+        contentSections: [
+          {
+            title: "Getting Started with Hilt",
+            description: "Dependency injection simplified with Hilt",
+            details: `<h3>Setup Hilt in Your Project</h3><pre><code class="language-bash"># In build.gradle (Project)
+plugins {
+    id 'com.google.dagger.hilt.android' version '2.46' apply false
+}
+
+# In build.gradle (App)
+plugins {
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
+}
+
+dependencies {
+    implementation 'com.google.dagger:hilt-android:2.46'
+    kapt 'com.google.dagger:hilt-compiler:2.46'
+}</code></pre><h3>Creating Hilt Application</h3><pre><code class="language-kotlin">@HiltAndroidApp
+class MyApplication : Application()
+
+// Add to AndroidManifest.xml
+<application
+    android:name=".MyApplication"
+    ...>
+</application></code></pre><h3>Dependency Injection in Activity</h3><pre><code class="language-kotlin">@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
+    @Inject
+    lateinit var userRepository: UserRepository
+    
+    @Inject
+    lateinit var analyticsService: AnalyticsService
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // userRepository and analyticsService are ready to use!
+        userRepository.loadUsers()
+    }
+}
+
+// Also works with Fragment
+@AndroidEntryPoint
+class HomeFragment : Fragment() {
+    @Inject
+    lateinit var userRepository: UserRepository
+}</code></pre><h3>Hilt Modules</h3><pre><code class="language-kotlin">@Module
+@InstallIn(SingletonComponent::class)
+object RepositoryModule {
+    @Provides
+    @Singleton
+    fun provideUserRepository(): UserRepository {
+        return UserRepository()
+    }
+    
+    @Provides
+    @Singleton
+    fun provideDatabase(context: Context): AppDatabase {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            "app_database"
+        ).build()
+    }
+}</code></pre>`
+          }
+        ]
+      }
+    ]
+  },
+
+  // ========== CATEGORY 18 ==========
+  {
+    id: "async-programming",
+    category: "18. Async Programming - Coroutines & Flow",
+    icon: "⚡",
+    difficulty: "Intermediate",
+    description: "Master asynchronous programming with Coroutines and Flow",
+    topics: [
+      {
+        id: "coroutines-basics",
+        title: "Kotlin Coroutines - Async Made Simple",
+        difficulty: "Intermediate",
+        duration: "5 hours",
+        keywords: ["coroutines", "async", "suspend", "launch"],
+        videoTimestamp: "https://www.youtube.com/watch?v=6manrgTPzyA",
+        officialRef: "https://kotlinlang.org/docs/coroutines-overview.html",
+        subtopics: ["Launch", "Async/Await", "Cancellation"],
+        contentSections: [
+          {
+            title: "Introduction to Coroutines",
+            description: "Lightweight threads for asynchronous programming",
+            details: `<h3>Basic Coroutine - Launch</h3><pre><code class="language-kotlin">// Start a coroutine
+lifecycleScope.launch {
+    // This runs in a coroutine
+    val user = fetchUser()  // Non-blocking!
+    updateUI(user)
+}
+
+// fetch stays on main thread, no ANR!
+
+@Composable
+fun UserScreen(viewModel: UserViewModel) {
+    LaunchedEffect(Unit) {
+        viewModel.loadUser()
+    }
+}</code></pre><h3>Async/Await Pattern</h3><pre><code class="language-kotlin">// Multiple parallel operations
+lifecycleScope.launch {
+    val users = async { fetchUsers() }
+    val posts = async { fetchPosts() }
+    
+    // Wait for both to complete
+    val combinedData = users.await() + posts.await()
+    updateUI(combinedData)
+}
+
+// Without async/await, would be sequential (slow)</code></pre><h3>Coroutine Scopes</h3><pre><code class="language-kotlin">// Activity scope (cancelled on destroy)
+lifecycleScope.launch {
+    // Automatic cleanup
+}
+
+// ViewModel scope (survives activity recreation)
+viewModelScope.launch {
+    // Safe for ViewModel
+}
+
+// Custom scope
+val scope = CoroutineScope(Dispatchers.Main)
+scope.launch {
+    // Custom scope
+}</code></pre><h3>Dispatchers - Threading</h3><pre><code class="language-kotlin">// Main thread (UI updates)
+lifecycleScope.launch(Dispatchers.Main) {
+    textView.text = "Hello"  // Safe!
+}
+
+// IO thread (network/database)
+lifecycleScope.launch(Dispatchers.IO) {
+    val data = api.fetchData()  // Non-blocking
+}
+
+// Default (CPU-intensive work)
+lifecycleScope.launch(Dispatchers.Default) {
+    val result = heavyComputation()
+}</code></pre>`
+          }
+        ]
+      },
+      {
+        id: "flow-stateflow",
+        title: "Flow & StateFlow - Reactive Streams",
+        difficulty: "Intermediate",
+        duration: "4 hours",
+        keywords: ["flow", "stateflow", "reactive", "stream"],
+        videoTimestamp: "https://www.youtube.com/watch?v=-Srf3QHPYqE",
+        officialRef: "https://kotlinlang.org/docs/flow.html",
+        subtopics: ["Flow Collection", "StateFlow", "Operators"],
+        contentSections: [
+          {
+            title: "Working with Flow",
+            description: "Asynchronous data streams in Kotlin",
+            details: `<h3>Creating and Collecting Flow</h3><pre><code class="language-kotlin">// Create a flow
+fun getNumbers(): Flow<Int> = flow {
+    for (i in 1..10) {
+        delay(1000)  // Suspend, not block
+        emit(i)
+    }
+}
+
+// Collect flow
+lifecycleScope.launch {
+    getNumbers().collect { number ->
+        println("Received: $number")
+    }
+}
+
+// Safe cancel when scope is closed</code></pre><h3>StateFlow - Reactive State</h3><pre><code class="language-kotlin">class UserViewModel : ViewModel() {
+    // StateFlow holds latest state
+    private val _userState = MutableStateFlow<UiState>(UiState.Loading)
+    val userState: StateFlow<UiState> = _userState
+    
+    fun loadUser() {
+        viewModelScope.launch {
+            try {
+                _userState.value = UiState.Loading
+                val user = userRepository.getUser()
+                _userState.value = UiState.Success(user)
+            } catch (e: Exception) {
+                _userState.value = UiState.Error(e.message)
+            }
+        }
+    }
+}
+
+sealed class UiState {
+    object Loading : UiState()
+    data class Success(val user: User) : UiState()
+    data class Error(val message: String?) : UiState()
+}</code></pre><h3>Flow Operators</h3><pre><code class="language-kotlin">// Transform values
+flow {
+    emit(1)
+    emit(2)
+    emit(3)
+}.map { it * 2 }  // [2, 4, 6]
+ .filter { it > 3 }  // [4, 6]
+ .collect { println(it) }
+
+// Combine multiple flows
+combine(flow1, flow2) { a, b ->
+    a + b
+}.collect { sum ->
+    textView.text = sum.toString()
+}
+
+// Delay between emissions
+flow {
+    emit("a")
+    emit("b")
+}.debounce(500.ms)
+ .collect { println(it) }</code></pre>`
+          }
+        ]
+      }
+    ]
+  },
+
+  // ========== CATEGORY 19 ==========
+  {
+    id: "data-persistence-networking",
+    category: "19. Data Persistence & Networking",
+    icon: "💾",
+    difficulty: "Intermediate",
+    description: "Store data locally and communicate with servers",
+    topics: [
+      {
+        id: "room-database",
+        title: "Room Database - Local Storage",
+        difficulty: "Intermediate",
+        duration: "4 hours",
+        keywords: ["room", "database", "sqlite", "dao"],
+        videoTimestamp: "https://www.youtube.com/watch?v=BBWyXo-3JGQ",
+        officialRef: "https://developer.android.com/training/data-storage/room",
+        subtopics: ["Entities", "DAOs", "Migrations"],
+        contentSections: [
+          {
+            title: "Setting Up Room Database",
+            description: "Type-safe local database access",
+            details: `<h3>Setup Dependencies</h3><pre><code class="language-bash">dependencies {
+    implementation 'androidx.room:room-runtime:2.5.1'
+    implementation 'androidx.room:room-ktx:2.5.1'
+    kapt 'androidx.room:room-compiler:2.5.1'
+}</code></pre><h3>Create Entity (Table)</h3><pre><code class="language-kotlin">@Entity(tableName = "users")
+data class UserEntity(
+    @PrimaryKey
+    val id: Int,
+    
+    @ColumnInfo(name = "user_name")
+    val name: String,
+    
+    val email: String,
+    
+    @Ignore  // Don't store in database
+    val profilePicture: Bitmap?
+)
+
+@Entity(primaryKeys = ["user_id", "book_id"])
+data class UserBookCrossRef(
+    val user_id: Int,
+    val book_id: Int
+)</code></pre><h3>Create DAO (Data Access Object)</h3><pre><code class="language-kotlin">@Dao
+interface UserDao {
+    @Insert
+    suspend fun insertUser(user: UserEntity)
+    
+    @Update
+    suspend fun updateUser(user: UserEntity)
+    
+    @Delete
+    suspend fun deleteUser(user: UserEntity)
+    
+    @Query("SELECT * FROM users WHERE id = :userId")
+    suspend fun getUserById(userId: Int): UserEntity
+    
+    @Query("SELECT * FROM users ORDER BY user_name")
+    fun getAllUsers(): Flow<List<UserEntity>>
+    
+    @Query("SELECT * FROM users WHERE email LIKE :searchQuery")
+    fun searchUsers(searchQuery: String): Flow<List<UserEntity>>
+    
+    @Transaction
+    @Query("SELECT * FROM users WHERE id = :userId")
+    suspend fun getUserWithBooks(userId: Int): UserWithBooks
+}</code></pre><h3>Create Database</h3><pre><code class="language-kotlin">@Database(
+    entities = [UserEntity::class, BookEntity::class],
+    version = 1,
+    exportSchema = false
+)
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun userDao(): UserDao
+    abstract fun bookDao(): BookDao
+    
+    companion object {
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
+        
+        fun getInstance(context: Context): AppDatabase {
+            return INSTANCE ?: synchronized(this) {
+                Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "app_database"
+                ).build().also { INSTANCE = it }
+            }
+        }
+    }
+}</code></pre>`
+          }
+        ]
+      },
+      {
+        id: "retrofit-networking",
+        title: "Retrofit - REST API Client",
+        difficulty: "Intermediate",
+        duration: "4 hours",
+        keywords: ["retrofit", "api", "rest", "networking"],
+        videoTimestamp: "https://www.youtube.com/watch?v=O7uIUqVqAQo",
+        officialRef: "https://square.github.io/retrofit",
+        subtopics: ["API Calls", "Interceptors", "Error Handling"],
+        contentSections: [
+          {
+            title: "Making API Calls with Retrofit",
+            description: "Type-safe REST client for Android",
+            details: `<h3>Setup Retrofit</h3><pre><code class="language-bash">dependencies {
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+}</code></pre><h3>Define API Service</h3><pre><code class="language-kotlin">// Data models
+data class User(
+    val id: Int,
+    val name: String,
+    val email: String
+)
+
+data class ApiResponse<T>(
+    val success: Boolean,
+    val data: T,
+    val message: String?
+)
+
+// API Service interface
+interface UserApiService {
+    @GET("users")
+    suspend fun getUsers(): List<User>
+    
+    @GET("users/{id}")
+    suspend fun getUser(@Path("id") userId: Int): User
+    
+    @POST("users")
+    suspend fun createUser(@Body user: User): User
+    
+    @PUT("users/{id}")
+    suspend fun updateUser(
+        @Path("id") userId: Int,
+        @Body user: User
+    ): User
+    
+    @DELETE("users/{id}")
+    suspend fun deleteUser(@Path("id") userId: Int)
+    
+    @GET("users")
+    suspend fun searchUsers(@Query("search") query: String): List<User>
+}</code></pre><h3>Create Retrofit Instance</h3><pre><code class="language-kotlin">object RetrofitClient {
+    private const val BASE_URL = "https://api.example.com/"
+    
+    val apiService: UserApiService by lazy {
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .build()
+        
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+            .create(UserApiService::class.java)
+    }
+}</code></pre><h3>Using Retrofit in ViewModel</h3><pre><code class="language-kotlin">class UserViewModel : ViewModel() {
+    private val _users = MutableStateFlow<List<User>>(emptyList())
+    val users: StateFlow<List<User>> = _users
+    
+    private val apiService = RetrofitClient.apiService
+    
+    fun loadUsers() {
+        viewModelScope.launch {
+            try {
+                val userList = apiService.getUsers()
+                _users.value = userList
+            } catch (e: Exception) {
+                Log.e("API", "Error loading users", e)
+            }
+        }
+    }
+}</code></pre>`
+          }
+        ]
+      }
+    ]
+  },
+
+  // ========== CATEGORY 20 ==========
+  {
+    id: "testing-quality",
+    category: "20. Testing & Quality Assurance",
+    icon: "🧪",
+    difficulty: "Intermediate",
+    description: "Ensure app quality with automated testing strategies",
+    topics: [
+      {
+        id: "unit-testing",
+        title: "Unit Testing - Testing Individual Components",
+        difficulty: "Intermediate",
+        duration: "3 hours",
+        keywords: ["unit", "test", "junit", "mockito"],
+        videoTimestamp: "https://www.youtube.com/watch?v=1j70DzqMltY",
+        officialRef: "https://developer.android.com/training/testing/unit-testing",
+        subtopics: ["JUnit", "Mocking", "Test Fixtures"],
+        contentSections: [
+          {
+            title: "Writing Unit Tests with JUnit",
+            description: "Testing business logic in isolation",
+            details: `<h3>Setup Testing Dependencies</h3><pre><code class="language-bash">testImplementation 'junit:junit:4.13.2'
+testImplementation 'org.mockito:mockito-core:5.2.0'
+testImplementation 'org.mockito.kotlin:mockito-kotlin:5.1.0'
+testImplementation 'androidx.arch.core:core-testing:2.2.0'</code></pre><h3>Basic Unit Test</h3><pre><code class="language-kotlin">// Calculator class to test
+class Calculator {
+    fun add(a: Int, b: Int) = a + b
+    fun subtract(a: Int, b: Int) = a - b
+}
+
+// Unit test class
+class CalculatorTest {
+    @Before
+    fun setup() { }
+    
+    @Test
+    fun testAdd() {
+        val calculator = Calculator()
+        val result = calculator.add(2, 3)
+        assertEquals(5, result)
+    }
+}</code></pre>`
+          }
+        ]
+      },
+      {
+        id: "ui-testing",
+        title: "UI Testing with Espresso",
+        difficulty: "Intermediate",
+        duration: "3 hours",
+        keywords: ["espresso", "ui", "test", "instrumentation"],
+        videoTimestamp: "https://www.youtube.com/watch?v=KKTY0VyCj0A",
+        officialRef: "https://developer.android.com/training/testing/espresso",
+        subtopics: ["View Matchers", "Actions", "Assertions"],
+        contentSections: [
+          {
+            title: "Automating UI Tests",
+            description: "Testing user interactions with Espresso",
+            details: `<h3>Basic Espresso Test</h3><pre><code class="language-kotlin">@RunWith(AndroidJUnit4::class)
+class LoginActivityTest {
+    @get:Rule
+    val activityRule = ActivityScenarioRule(LoginActivity::class.java)
+    
+    @Test
+    fun login_successful() {
+        onView(withId(R.id.email_input))
+            .perform(typeText("user@email.com"))
+        
+        onView(withId(R.id.login_button))
+            .perform(click())
+        
+        onView(withText("Welcome"))
+            .check(matches(isDisplayed()))
+    }
+}</code></pre>`
+          }
+        ]
+      }
+    ]
+  },
+
+  // ========== CATEGORY 21 ==========
+  {
+    id: "cicd-deployment",
+    category: "21. CI/CD & App Distribution",
+    icon: "🚀",
+    difficulty: "Advanced",
+    description: "Automate build, test, and deploy workflows",
+    topics: [
+      {
+        id: "github-actions",
+        title: "GitHub Actions - Build Automation",
+        difficulty: "Advanced",
+        duration: "4 hours",
+        keywords: ["github", "actions", "ci", "workflows"],
+        videoTimestamp: "https://www.youtube.com/watch?v=JVEkqqRZaWc",
+        officialRef: "https://github.com/features/actions",
+        subtopics: ["Workflows", "Jobs", "Deployment"],
+        contentSections: [
+          {
+            title: "Automated Android Builds",
+            description: "CI/CD pipeline for Android projects",
+            details: `<h3>GitHub Actions Workflow</h3><pre><code class="language-yaml">name: Android Build
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+      - name: Build
+        run: ./gradlew build
+      - name: Test
+        run: ./gradlew test</code></pre>`
+          }
+        ]
+      },
+      {
+        id: "play-store-deployment",
+        title: "App Signing & Google Play Distribution",
+        difficulty: "Advanced",
+        duration: "3 hours",
+        keywords: ["signing", "playstore", "release"],
+        videoTimestamp: "https://www.youtube.com/watch?v=PuBZhfLQfHw",
+        officialRef: "https://developer.android.com/studio/publish/app-signing",
+        subtopics: ["Keystore", "Signing Config", "Play Store"],
+        contentSections: [
+          {
+            title: "Signing Your App for Release",
+            description: "Creating and managing app signing keys",
+            details: `<h3>Generate Keystore</h3><pre><code class="language-bash">keytool -genkey -v -keystore my-app.jks -keyalg RSA -keysize 2048 -validity 10000</code></pre><h3>Configure Signing</h3><pre><code class="language-gradle">signingConfigs {
+    release {
+        storeFile file("my-app.jks")
+        storePassword System.getenv("KEYSTORE_PASSWORD")
+        keyAlias System.getenv("KEY_ALIAS")
+        keyPassword System.getenv("KEY_PASSWORD")
+    }
+}</code></pre>`
+          }
+        ]
+      }
+    ]
+  },
+
+  // ========== CATEGORY 22 ==========
+  {
+    id: "advanced-patterns",
+    category: "22. Advanced Patterns & Performance",
+    icon: "⚙️",
+    difficulty: "Advanced",
+    description: "Master advanced architecture and optimization techniques",
+    topics: [
+      {
+        id: "performance-optimization",
+        title: "Performance Profiling & Optimization",
+        difficulty: "Advanced",
+        duration: "5 hours",
+        keywords: ["performance", "profiling", "optimization"],
+        videoTimestamp: "https://www.youtube.com/watch?v=LLB4aw_p-TQ",
+        officialRef: "https://developer.android.com/studio/profile/performance-tools",
+        subtopics: ["Memory Leaks", "Frame Rate", "Battery"],
+        contentSections: [
+          {
+            title: "Detecting Memory Leaks",
+            description: "Finding and fixing memory issues",
+            details: `<h3>Common Memory Leak Patterns</h3><pre><code class="language-kotlin">// ❌ BAD: Static reference
+object Singleton {
+    var activity: Activity? = null
+}
+
+// ✅ GOOD: Use WeakReference
+var weakRef: WeakReference<Activity>? = null</code></pre>`
+          }
+        ]
+      },
+      {
+        id: "security-best-practices",
+        title: "Security & Data Protection",
+        difficulty: "Advanced",
+        duration: "4 hours",
+        keywords: ["security", "encryption", "ssl"],
+        videoTimestamp: "https://www.youtube.com/watch?v=2SJtKxDGhWM",
+        officialRef: "https://developer.android.com/training/security",
+        subtopics: ["Encryption", "SSL Pinning", "Secure Storage"],
+        contentSections: [
+          {
+            title: "Implementing App Security",
+            description: "Protecting user data",
+            details: `<h3>Encrypted Shared Preferences</h3><pre><code class="language-kotlin">val masterKey = MasterKey.Builder(context).build()
+val encryptedSharedPreferences = EncryptedSharedPreferences.create(
+    context,
+    "secret_pref",
+    masterKey,
+    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+)</code></pre>`
+          }
+        ]
+      }
+    ]
+  },
+
+  // ========== CATEGORY 23 ==========
+  {
+    id: "kotlin-multiplatform",
+    category: "23. Kotlin Multiplatform (KMP)",
+    icon: "🌐",
+    difficulty: "Advanced",
+    description: "Share code between Android, iOS, and web platforms",
+    topics: [
+      {
+        id: "kmp-basics",
+        title: "KMP Fundamentals - Code Sharing",
+        difficulty: "Advanced",
+        duration: "5 hours",
+        keywords: ["kmp", "multiplatform", "share"],
+        videoTimestamp: "https://www.youtube.com/watch?v=0xKg9lFehYE",
+        officialRef: "https://kotlinlang.org/docs/multiplatform.html",
+        subtopics: ["Project Setup", "Expect/Actual", "Dependencies"],
+        contentSections: [
+          {
+            title: "Setting Up KMP Project",
+            description: "Creating a multiplatform Kotlin project",
+            details: `<h3>Shared Code Structure</h3><pre><code>shared/
+  ├── src/commonMain/    # Shared code
+  ├── src/androidMain/   # Android-specific
+  └── src/iosMain/       # iOS-specific</code></pre><h3>Shared Repository</h3><pre><code class="language-kotlin">class UserRepository {
+    suspend fun getUsers(): List<User> {
+        return httpClient.get("users")
+    }
+}</code></pre>`
+          }
+        ]
+      }
+    ]
+  },
+
+  // ========== CATEGORY 24 ==========
+  {
+    id: "interview-preparation",
+    category: "24. Interview Preparation & System Design",
+    icon: "🎤",
+    difficulty: "Advanced",
+    description: "Prepare for Android interviews and system design discussions",
+    topics: [
+      {
+        id: "system-design-interview",
+        title: "System Design for Android Apps",
+        difficulty: "Advanced",
+        duration: "6 hours",
+        keywords: ["system", "design", "architecture"],
+        videoTimestamp: "https://www.youtube.com/watch?v=5ZRi4mHU18Y",
+        officialRef: "https://developer.android.com/jetpack/guide",
+        subtopics: ["Scalability", "Reliability", "Security"],
+        contentSections: [
+          {
+            title: "Designing Large-Scale Apps",
+            description: "Architectural decisions for production apps",
+            details: `<h3>App Architecture Layers</h3><pre><code>┌─────────────────────────────┐
+│   UI Layer (Activities)     │
+├─────────────────────────────┤
+│   ViewModel + Use Cases     │
+├─────────────────────────────┤
+│   Domain Layer (Entities)   │
+├─────────────────────────────┤
+│   Repository (Abstraction)  │
+├─────────────────────────────┤
+│   Data Layer (Network/DB)   │
+└─────────────────────────────┘</code></pre><h3>Sample Implementation</h3><pre><code class="language-kotlin">// Domain Layer
+data class User(val id: Int, val name: String)
+
+interface UserRepository {
+    suspend fun getUsers(): Result<List<User>>
+}
+
+// Use Case
+class GetUsersUseCase(private val repo: UserRepository) {
+    suspend operator fun invoke() = repo.getUsers()
+}
+
+// ViewModel
+class UserListViewModel(
+    private val useCase: GetUsersUseCase
+) : ViewModel() {
+    private val _users = MutableStateFlow<UiState>(UiState.Loading)
+    val users = _users.asStateFlow()
+}</code></pre>`
+          }
+        ]
+      },
+      {
+        id: "common-interview-questions",
+        title: "Common Interview Questions & Answers",
+        difficulty: "Advanced",
+        duration: "4 hours",
+        keywords: ["interview", "questions", "answers"],
+        videoTimestamp: "https://www.youtube.com/watch?v=0xKg9lFehYE",
+        officialRef: "https://developer.android.com/guide",
+        subtopics: ["Fundamentals", "Performance", "Architecture"],
+        contentSections: [
+          {
+            title: "Top Android Interview Questions",
+            description: "Common questions and answers",
+            details: `<h3>Q1: What is the Activity Lifecycle?</h3><pre><code>A: Seven main states:
+   - onCreate(): Activity created
+   - onStart(): Becomes visible
+   - onResume(): Gains focus
+   - onPause(): Loses focus
+   - onStop(): Not visible
+   - onRestart(): Coming back from stopped
+   - onDestroy(): Destroyed
+
+Save data in onSaveInstanceState() or databases.
+ViewModel survives config changes automatically.</code></pre><h3>Q2: MVVM Pattern</h3><pre><code>A: Three layers:
+   - Model: Data & business logic
+   - View: UI components (Activities)
+   - ViewModel: State & UI logic
+
+Benefits:
+✓ Separation of concerns
+✓ Testable code
+✓ Survives config changes
+✓ Scalable structure</code></pre><h3>Q3: Coroutines Benefits</h3><pre><code>A: 
+✓ Simple async/await syntax
+✓ Better than callbacks
+✓ Low memory overhead
+✓ Structured concurrency
+✓ Exception handling with try/catch
+
+Simple usage:
+viewModelScope.launch {
+    val user = fetchUser()  // Async
+    updateUI(user)          // Non-blocking
+}</code></pre>`
+          }
+        ]
+      }
+    ]
   }
 ];
 
