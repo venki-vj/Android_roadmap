@@ -3,29 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Android Mastery | The Ultimate Developer Roadmap 2026</title>
-    <meta name="description" content="A complete, interactive roadmap for Android App Development and AOSP System Engineering. From Kotlin to Kernel drivers.">
-    <meta name="keywords" content="Android Roadmap, AOSP, Kotlin, Jetpack Compose, System Engineering, HAL, Binder IPC">
+    <title>Android Mastery | Modern Interactive Roadmap 2026 | From App Dev to System Design</title>
+    <meta name="description" content="The most comprehensive Android development roadmap 2026. Master Kotlin, Jetpack Compose, MVVM, Clean Architecture, System Design, and CI/CD. Interactive learning with progress tracking.">
+    <meta name="keywords" content="Android development, Kotlin, Jetpack Compose, MVVM, Clean Architecture, System Design, AOSP, Coroutines, Flow, Hilt, Retrofit, Room, KMP, Android roadmap 2026">
     <meta name="author" content="Android Mastery">
+    <meta name="robots" content="index, follow">
     
     <!-- Open Graph / Social -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://venki-vj.github.io/Android_roadmap/">
-    <meta property="og:title" content="Android Mastery Roadmap 2026">
-    <meta property="og:description" content="Master Android from App to Kernel. Interactive learning path.">
+    <meta property="og:title" content="Android Mastery | Modern Interactive Roadmap 2026">
+    <meta property="og:description" content="Comprehensive Android development roadmap from Kotlin basics to advanced system design. Interactive, self-paced, free.">
     <meta property="og:image" content="assets/roadmap-preview.png">
+    <meta property="og:image:alt" content="Android Development Roadmap 2026">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Android Mastery Roadmap">
+    <meta name="twitter:description" content="Master Android from fundamentals to system design. Interactive learning roadmap.">
+    <meta name="twitter:image" content="assets/roadmap-preview.png">
     
     <!-- CSS & Fonts -->
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style-modern.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
-    <!-- Structured Data (WebSite) -->
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>🚀</text></svg>">
+    
+    <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Android Mastery Roadmap",
       "url": "https://venki-vj.github.io/Android_roadmap/",
+      "description": "Comprehensive Android development roadmap 2026",
       "potentialAction": {
         "@type": "SearchAction",
         "target": "https://venki-vj.github.io/Android_roadmap/roadmap.html?q={search_term_string}",
@@ -33,142 +45,482 @@
       }
     }
     </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CreativeWork",
+      "name": "Android Development Roadmap",
+      "description": "Interactive learning roadmap for Android developers",
+      "author": {
+        "@type": "Organization",
+        "name": "Android Mastery"
+      },
+      "datePublished": "2024-01-01",
+      "dateModified": "2026-03-01",
+      "inLanguage": "en"
+    }
+    </script>
 </head>
-<body>
-    <header class="navbar">
+<body class="dark-mode">
+    <!-- Navigation Bar -->
+    <header class="navbar sticky">
         <div class="nav-container">
             <a href="index.html" class="logo">
                 <span class="logo-icon">🚀</span>
-                Android Mastery
+                <span class="logo-text">Android Mastery</span>
+                <span class="version-badge">v5.1</span>
             </a>
             
-            <!-- Mobile Toggle -->
-            <button class="mobile-menu-btn" aria-label="Toggle navigation">
+            <button class="mobile-menu-btn" aria-label="Toggle navigation" onclick="toggleMobileMenu()">
                 <span></span><span></span><span></span>
             </button>
 
-            <nav class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#curriculum">Curriculum</a>
-                <button class="theme-btn" id="theme-toggle" aria-label="Toggle Dark Mode">🌙</button>
-                <a href="roadmap.html" class="btn btn-primary btn-sm">View Roadmap</a>
+            <nav class="nav-links" id="navLinks">
+                <a href="#hero" class="nav-link">Home</a>
+                <a href="#roadmap-preview" class="nav-link">Overview</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#levels" class="nav-link">Levels</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+                <button class="theme-btn" id="theme-toggle" aria-label="Toggle Dark Mode" onclick="toggleTheme()">🌙</button>
+                <a href="roadmap.html" class="btn btn-primary btn-sm">Start Learning</a>
             </nav>
         </div>
     </header>
 
-    <section class="hero">
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-background"></div>
         <div class="hero-content">
-            <div class="badge">Version 5.0 is Live ✨</div>
-            <h1>Master Android Development. <br><span class="highlight">Build the Future.</span></h1>
-            <p>The most comprehensive, up-to-date, and interactive learning path from absolute beginner to advanced Android engineer. Featuring Jetpack Compose, Coroutines, and modern architecture.</p>
+            <div class="badge">🎯 Updated March 2026</div>
+            <h1>Master Android Development</h1>
+            <h2 class="highlight">From Kotlin Basics to System Design</h2>
+            <p class="hero-subtitle">The most comprehensive, interactive roadmap for aspiring and experienced Android engineers. Learn modern architecture, best practices, and real-world patterns.</p>
             <div class="hero-actions">
-                <a href="roadmap.html" class="btn btn-primary btn-lg">Start Learning Now</a>
-                <a href="#features" class="btn btn-secondary btn-lg">Explore Features</a>
+                <a href="roadmap.html" class="btn btn-primary btn-lg">
+                    <span>🗺️</span> Start the Interactive Roadmap
+                </a>
+                <a href="#features" class="btn btn-secondary btn-lg">
+                    <span>📚</span> Learn More
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">180+</span>
+                    <span class="stat-label">Topics</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">45+</span>
+                    <span class="stat-label">Projects</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Levels</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">Free</span>
+                    <span class="stat-label">Forever</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="roadmap-preview">
-        <h2>Roadmap Overview</h2>
-        <img src="assets/roadmap-preview.png" alt="Android Roadmap Structure" loading="lazy" onerror="this.style.display='none'">
-        <p>Structured in 5 progressive stages from Kotlin fundamentals to advanced architecture and publishing.</p>
+    <!-- Roadmap Preview Section -->
+    <section id="roadmap-preview" class="roadmap-preview">
+        <div class="section-container">
+            <h2>📊 Your Learning Journey</h2>
+            <p class="section-subtitle">Three progressive levels, each building on the previous. Master at your own pace.</p>
+            <div class="preview-grid">
+                <div class="preview-card level-1">
+                    <div class="card-badge">Level 1</div>
+                    <h3>🌱 Beginner</h3>
+                    <p>Master Kotlin fundamentals and Android basics</p>
+                    <ul>
+                        <li>☑️ Kotlin Essentials</li>
+                        <li>☑️ Activities & Fragments</li>
+                        <li>☑️ UI Fundamentals</li>
+                        <li>☑️ First App Project</li>
+                    </ul>
+                </div>
+                <div class="preview-card level-2">
+                    <div class="card-badge">Level 2</div>
+                    <h3>📈 Intermediate</h3>
+                    <p>Build production apps with modern architecture</p>
+                    <ul>
+                        <li>☑️ MVVM Architecture</li>
+                        <li>☑️ Jetpack Compose</li>
+                        <li>☑️ Coroutines & Flow</li>
+                        <li>☑️ Networking & DB</li>
+                    </ul>
+                </div>
+                <div class="preview-card level-3">
+                    <div class="card-badge">Level 3</div>
+                    <h3>🚀 Advanced</h3>
+                    <p>Expert-level topics and system design</p>
+                    <ul>
+                        <li>☑️ System Design</li>
+                        <li>☑️ Performance & Profiling</li>
+                        <li>☑️ CI/CD & Publishing</li>
+                        <li>☑️ Interview Prep</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section class="timeline">
-      <div class="section-container">
-          <h2 style="margin-bottom: 2rem">Learning Phases</h2>
-          <div class="phase">Phase 1 – Kotlin Basics (2–3 weeks)</div>
-          <div class="phase">Phase 2 – Android Fundamentals (3–4 weeks)</div>
-          <div class="phase">Phase 3 – Architecture & MVVM</div>
-          <div class="phase">Phase 4 – Jetpack Compose</div>
-          <div class="phase">Phase 5 – Advanced & Publishing</div>
-      </div>
-    </section>
-
+    <!-- Features Section -->
     <section id="features" class="section bg-light">
         <div class="section-container">
-            <div class="section-header">
-                <h2>Why Choose This Roadmap?</h2>
-                <p>Designed for clarity, structured for success, and packed with official resources.</p>
-            </div>
-            <div class="grid features-grid">
-                <div class="card feature-card">
-                    <div class="card-icon">📚</div>
-                    <h3>Comprehensive</h3>
-                    <p>A complete learning path covering everything from basic Kotlin syntax to advanced Jetpack Navigation and App Publishing.</p>
+            <h2>✨ Why Choose This Roadmap?</h2>
+            <p class="section-subtitle">Designed by professionals, optimized for learning.</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Comprehensive Content</h3>
+                    <p>180+ topics from Kotlin fundamentals to Android system internals, AOSP, and CI/CD pipelines.</p>
                 </div>
-                <div class="card feature-card">
-                    <div class="card-icon">✨</div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
                     <h3>Modern Tech Stack</h3>
-                    <p>Learn the tools industry professionals use today, including Jetpack Compose, MVVM, and Hilt Dependency Injection.</p>
+                    <p>Learn industry-standard tools: Jetpack Compose, MVVM, Hilt, Coroutines, KMP, and more.</p>
                 </div>
-                <div class="card feature-card">
-                    <div class="card-icon">⚡</div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Project-Based Learning</h3>
+                    <p>45+ real-world projects organized by difficulty level to reinforce concepts practically.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Progress Tracking</h3>
+                    <p>Interactive checkboxes, progress percentages, and milestones to track your learning journey.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
                     <h3>Interactive UI</h3>
-                    <p>Navigate effortlessly with an expandable sidebar, instant search filtering, and one-click code copying.</p>
+                    <p>Expandable navigation, instant search, code highlighting, and smooth animations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌙</div>
+                    <h3>Dark Mode Ready</h3>
+                    <p>Eye-friendly dark mode by default with seamless light mode toggle and persistent preference.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile Optimized</h3>
+                    <p>Fully responsive design works perfectly on phones, tablets, and desktops.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3>Official Resources</h3>
+                    <p>Every topic links to official Android documentation and video tutorials.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Interview Ready</h3>
+                    <p>Dedicated section with system design questions and interview preparation guides.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="curriculum" class="section">
+    <!-- Learning Levels Section -->
+    <section id="levels" class="section">
         <div class="section-container">
-            <div class="section-header">
-                <h2>Everything You Need to Know</h2>
-                <p>A structured breakdown of the core technologies and productivity tools covered in the V5 curriculum.</p>
+            <h2>📚 Learning Levels & Milestones</h2>
+            <p class="section-subtitle">Each level includes core topics, projects, and estimated learning time.</p>
+            
+            <div class="levels-timeline">
+                <!-- Level 1 -->
+                <div class="level-container">
+                    <div class="level-marker level-1">
+                        <span>1</span>
+                    </div>
+                    <div class="level-content">
+                        <h3>🌱 Beginner Level (4-8 weeks)</h3>
+                        <p>Build your foundation with Kotlin and Android basics</p>
+                        <div class="topics-grid">
+                            <div class="topic-badge">Kotlin Fundamentals</div>
+                            <div class="topic-badge">Variables & Control Flow</div>
+                            <div class="topic-badge">OOP in Kotlin</div>
+                            <div class="topic-badge">Activity Lifecycle</div>
+                            <div class="topic-badge">Fragment Basics</div>
+                            <div class="topic-badge">UI Components</div>
+                            <div class="topic-badge">RecyclerView</div>
+                            <div class="topic-badge">SharedPreferences</div>
+                        </div>
+                        <div class="level-projects">
+                            <strong>📊 Key Projects:</strong>
+                            <ul>
+                                <li>✅ Calculator App</li>
+                                <li>✅ To-Do List App</li>
+                                <li>✅ Weather App (Single Screen)</li>
+                                <li>✅ Photo Gallery</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 2 -->
+                <div class="level-container">
+                    <div class="level-marker level-2">
+                        <span>2</span>
+                    </div>
+                    <div class="level-content">
+                        <h3>📈 Intermediate Level (8-16 weeks)</h3>
+                        <p>Master modern architecture and production-ready patterns</p>
+                        <div class="topics-grid">
+                            <div class="topic-badge">MVVM Pattern</div>
+                            <div class="topic-badge">LiveData & ViewModel</div>
+                            <div class="topic-badge">Coroutines</div>
+                            <div class="topic-badge">Flow & StateFlow</div>
+                            <div class="topic-badge">Jetpack Compose</div>
+                            <div class="topic-badge">Retrofit</div>
+                            <div class="topic-badge">Room Database</div>
+                            <div class="topic-badge">Hilt DI</div>
+                            <div class="topic-badge">WorkManager</div>
+                            <div class="topic-badge">Unit Testing</div>
+                        </div>
+                        <div class="level-projects">
+                            <strong>📊 Key Projects:</strong>
+                            <ul>
+                                <li>✅ News Reader App (API + DB)</li>
+                                <li>✅ E-Commerce App</li>
+                                <li>✅ Social Media Clone</li>
+                                <li>✅ Task Management with Notifications</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 3 -->
+                <div class="level-container">
+                    <div class="level-marker level-3">
+                        <span>3</span>
+                    </div>
+                    <div class="level-content">
+                        <h3>🚀 Advanced Level (12+ weeks)</h3>
+                        <p>Expert skills: system design, performance, and production engineering</p>
+                        <div class="topics-grid">
+                            <div class="topic-badge">System Design</div>
+                            <div class="topic-badge">Performance Profiling</div>
+                            <div class="topic-badge">Memory Management</div>
+                            <div class="topic-badge">Android Internals</div>
+                            <div class="topic-badge">AOSP</div>
+                            <div class="topic-badge">HAL Development</div>
+                            <div class="topic-badge">Security & Encryption</div>
+                            <div class="topic-badge">CI/CD Pipelines</div>
+                            <div class="topic-badge">KMP Multiplatform</div>
+                            <div class="topic-badge">Interview Prep</div>
+                        </div>
+                        <div class="level-projects">
+                            <strong>📊 Key Projects:</strong>
+                            <ul>
+                                <li>✅ Large-Scale App Architecture</li>
+                                <li>✅ Custom ROM Development</li>
+                                <li>✅ Performance-Optimized App</li>
+                                <li>✅ Secure Payment System</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="grid tech-grid">
-                <div class="tech-item">
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="section bg-light">
+        <div class="section-container">
+            <h2>🛠️ Tech Stack You'll Master</h2>
+            <p class="section-subtitle">Industry-standard tools and frameworks (2026)</p>
+            
+            <div class="tech-stack-grid">
+                <div class="tech-category">
                     <h4>🔧 Languages</h4>
-                    <p>Kotlin & Java Fundamentals</p>
+                    <div class="tech-items">
+                        <span class="tech-tag">Kotlin</span>
+                        <span class="tech-tag">Java</span>
+                    </div>
                 </div>
-                <div class="tech-item">
+
+                <div class="tech-category">
+                    <h4>🎨 UI Framework</h4>
+                    <div class="tech-items">
+                        <span class="tech-tag">Jetpack Compose</span>
+                        <span class="tech-tag">XML Layouts</span>
+                        <span class="tech-tag">Material Design 3</span>
+                    </div>
+                </div>
+
+                <div class="tech-category">
                     <h4>🏗️ Architecture</h4>
-                    <p>MVVM, Clean Code, LiveData & Flow</p>
+                    <div class="tech-items">
+                        <span class="tech-tag">MVVM</span>
+                        <span class="tech-tag">Clean Architecture</span>
+                        <span class="tech-tag">Repository Pattern</span>
+                    </div>
                 </div>
-                <div class="tech-item">
-                    <h4>🎨 Modern UI</h4>
-                    <p>Jetpack Compose & ConstraintLayout</p>
+
+                <div class="tech-category">
+                    <h4>⚡ Async Programming</h4>
+                    <div class="tech-items">
+                        <span class="tech-tag">Coroutines</span>
+                        <span class="tech-tag">Flow</span>
+                        <span class="tech-tag">StateFlow</span>
+                    </div>
                 </div>
-                <div class="tech-item">
-                    <h4>⚡ Productivity</h4>
-                    <p>Live Templates, Studio Shortcuts</p>
+
+                <div class="tech-category">
+                    <h4>💾 Data Management</h4>
+                    <div class="tech-items">
+                        <span class="tech-tag">Room</span>
+                        <span class="tech-tag">Retrofit</span>
+                        <span class="tech-tag">DataStore</span>
+                    </div>
                 </div>
-                <div class="tech-item">
-                    <h4>🕵️ Debugging</h4>
-                    <p>App Inspection, Logcat V2, Profilers</p>
+
+                <div class="tech-category">
+                    <h4>🔌 Dependency Injection</h4>
+                    <div class="tech-items">
+                        <span class="tech-tag">Hilt</span>
+                        <span class="tech-tag">Dagger</span>
+                    </div>
                 </div>
-                <div class="tech-item">
-                    <h4>🚀 Deployment</h4>
-                    <p>App Bundles (AAB) & Play Console</p>
+
+                <div class="tech-category">
+                    <h4>🧪 Testing</h4>
+                    <div class="tech-items">
+                        <span class="tech-tag">JUnit</span>
+                        <span class="tech-tag">Espresso</span>
+                        <span class="tech-tag">Mockito</span>
+                    </div>
+                </div>
+
+                <div class="tech-category">
+                    <h4>🚀 DevOps</h4>
+                    <div class="tech-items">
+                        <span class="tech-tag">GitHub Actions</span>
+                        <span class="tech-tag">Firebase</span>
+                        <span class="tech-tag">Play Console</span>
+                    </div>
+                </div>
+
+                <div class="tech-category">
+                    <h4>📱 Cross-Platform</h4>
+                    <div class="tech-items">
+                        <span class="tech-tag">Kotlin Multiplatform</span>
+                        <span class="tech-tag">Compose Multiplatform</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section cta-section bg-light">
+    <!-- FAQ Section -->
+    <section id="faq" class="section">
         <div class="section-container">
-            <div class="pro-tip-box">
-                <div class="pro-tip-content">
-                    <h3>⭐ Pro Tip for Success</h3>
-                    <p>Don't just read the documentation—build alongside it. Open Android Studio, copy the code snippets from the roadmap, and experiment with them to solidify your understanding.</p>
-                    <a href="roadmap.html" class="btn btn-primary">Launch the Roadmap →</a>
+            <h2>❓ Frequently Asked Questions</h2>
+            
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>Who is this roadmap for?</h4>
+                    <p>Anyone wanting to learn Android development, from complete beginners to experienced developers looking to master modern patterns and system design.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Do I need prior programming experience?</h4>
+                    <p>The Beginner level assumes no Android experience but expects basic programming knowledge. We recommend pre-learning Python or JavaScript basics if needed.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>How long will it take?</h4>
+                    <p>Beginner: 4-8 weeks, Intermediate: 8-16 weeks, Advanced: 12+ weeks. Timelines vary based on your pace and prior experience.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Is there a certificate?</h4>
+                    <p>No certificate is issued, but you'll build a portfolio of real projects that speaks louder than any certificate to employers.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Can I use this without internet?</h4>
+                    <p>Yes! The roadmap works offline. However, external links to documentation and videos require internet access.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>How often is the roadmap updated?</h4>
+                    <p>We update quarterly with the latest Android releases, framework changes, and community feedback. Last updated: March 2026.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Can I contribute?</h4>
+                    <p>Absolutely! The project is open-source on GitHub. We welcome contributions, corrections, and suggestions.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Will this prepare me for interviews?</h4>
+                    <p>Yes! The Advanced level includes dedicated interview preparation materials and system design questions commonly asked at major tech companies.</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="section-container">
+            <div class="cta-box">
+                <h2>Ready to Master Android Development?</h2>
+                <p>Start your learning journey today. Free, comprehensive, and constantly updated.</p>
+                <div class="cta-actions">
+                    <a href="roadmap-modern.html" class="btn btn-primary btn-lg">
+                        🗺️ Start Interactive Roadmap
+                    </a>
+                    <a href="https://github.com/venki-vj/Android_roadmap" target="_blank" class="btn btn-secondary btn-lg">
+                        ⭐ Star on GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
-            <p>&copy; 2026 Android Mastery Roadmap. Made with ❤️ for aspiring engineers.</p>
-            <div class="footer-links">
-                <a href="https://developer.android.com" target="_blank">Official Android Docs</a>
-                <a href="https://kotlinlang.org" target="_blank">Kotlin Docs</a>
+            <div class="footer-section">
+                <h4>Android Mastery</h4>
+                <p>The most comprehensive Android development roadmap for 2026.</p>
+                <p class="footer-meta">Last Updated: March 2026</p>
             </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="https://developer.android.com" target="_blank">Android Docs ↗</a></li>
+                    <li><a href="https://kotlinlang.org" target="_blank">Kotlin Docs ↗</a></li>
+                    <li><a href="https://source.android.com" target="_blank">AOSP Source ↗</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Community</h4>
+                <ul>
+                    <li><a href="https://github.com/venki-vj/Android_roadmap" target="_blank">GitHub ↗</a></li>
+                    <li><a href="https://twitter.com" target="_blank">Twitter ↗</a></li>
+                    <li><a href="mailto:contact@androidmastery.dev">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                    <li><a href="#contributing">Contributing</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Android Mastery. Built with ❤️ for developers. Open source MIT License.</p>
         </div>
     </footer>
 
-    <!-- Script for Dark Mode & Mobile Menu -->
-    <script src="js/script.js"></script>
+    <!-- Scripts -->
+    <script src="js/modern.js"></script>
 </body>
 </html>
